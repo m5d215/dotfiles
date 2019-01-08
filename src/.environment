@@ -1,0 +1,25 @@
+# general
+export LANG=en_US.UTF-8
+export LESS='-R'
+export LESSCHARSET=utf-8
+export TERM=xterm-256color
+export PATH=~/bin:$PATH
+
+# powerline
+case "$OSTYPE" in
+darwin*)
+    if [ -d /usr/local/lib/python2.7/site-packages/powerline ]; then
+        export POWERLINE_HOME=/usr/local/lib/python2.7/site-packages/powerline
+    fi
+    ;;
+linux*)
+    if [ -d /usr/local/lib/python2.7/dist-packages/powerline ]; then
+        export POWERLINE_HOME=/usr/local/lib/python2.7/dist-packages/powerline
+    fi
+    ;;
+esac
+
+# load user configuration
+if [ -f ~/.config/shell/.environment ]; then
+    . ~/.config/shell/.environment
+fi

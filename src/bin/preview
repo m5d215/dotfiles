@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+set -u
+
+if (($# < 1 )) || [ -z "$1" ]; then
+    exit 1
+fi
+
+lines=${2:-$(tput lines)}
+
+case "$OSTYPE" in
+    darwin*)
+        ls_enable_color='-G'
+        ;;
+    linux*|msys)
+        ls_enable_color='--color=yes'
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+if [ -d "$1" ]; then
+    command ls -al "$ls_enable_color" "$1" | tail -n +2
+else
+    command ls -l "$ls_enable_color" "$1" 2>&1
+    echo
+    
+    if grep -qIE '^.' "$1" 2>/dev/null; then
+        head -n "$((lines - 2))" "$1" 2>&1 | pygmentize -O style=native -f terminal256
+    else
+        message=$(file "$1" 2>&1)
+        echo "${message#*: }"
+    fi
+fi

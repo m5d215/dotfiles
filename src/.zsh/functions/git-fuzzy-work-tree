@@ -1,0 +1,51 @@
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
+
+local _query
+local _key
+local _item
+local _name
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _item
+} < <(git -c color.status=always status --short --branch --untracked-files=all --ignore-submodules=all | fzf \
+    --header='enter: diff | C-s: stage | C-u: unstage | C-r: discard | C-i: inline select | C-l: reload' \
+    --header-lines=1 \
+    --preview='
+            local _path={}
+            git diff --color=always -- "${_path#???}"
+        ' \
+    --bind='enter:execute(
+            local _path={}
+            git diff --color=always -- "${_path#???}" >/dev/tty
+        )' \
+    --bind='ctrl-s:execute-silent(
+            local _path={}
+            git add -- "${_path#???}"
+        )' \
+    --bind='ctrl-u:execute-silent(
+            local _path={}
+            git reset -- "${_path#???}"
+        )' \
+    --bind='ctrl-r:execute-silent(
+            local _path={}
+            git checkout HEAD -- "${_path#???}"
+        )' \
+    --query=$_query \
+    --print-query \
+    --expect='ctrl-i,ctrl-l'
+)
+do
+    _name=${_item#???}
+
+    case "$_key" in
+        ctrl-i)
+            LBUFFER+=$_name
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+    esac
+done

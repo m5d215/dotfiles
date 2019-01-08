@@ -1,0 +1,82 @@
+#!/bin/bash
+
+set -e
+set -u
+
+ARGPARSE_DESCRIPTION='execute command for each git repositories'
+ARGPARSE_OPTS=(
+    '_ g git+ -- execute git command for each git repositories'
+    'e exec+ -- execute shell command for each git repositories'
+    'C home: -- home (default: ~/dev/src)'
+    'l list? -- list git repositories'
+    'f fqdn: -- filter by FQDN'
+    'u user: -- filter by user'
+    'n name: -- filter by name'
+    'h help? -- display this help and exit'
+)
+ARGPARSE_EXAMPLES=(
+    'git-foreach fetch origin'
+    'git-foreach --git fetch origin'
+    'git-foreach --exec git fetch origin'
+    'git-foreach --exec pwd'
+    'git-foreach --list'
+    'git-foreach --list | fzf'
+    'git-foreach --list --fqdn github.com'
+    'git-foreach --list --user manabedaiki'
+)
+ARGPARSE_AGGRESSIVE_EAT=1
+source "$(dirname "$0")/argparse"
+
+opt_home=${opt_home:-$HOME/.ghq}
+
+function execute_command()
+{
+    local _line
+    
+    while IFS=$'\n' read -r _line
+    do
+        echo -e "  \033[90m> $_line\033[0m"
+    done < <("$@" 2>&1)
+}
+
+function subcommand_git()
+{
+    while IFS=$'\n' read -r _repo
+    do
+        echo -e "\033[1;96m$ git -C $opt_home/$_repo ${opt_git[*]}\033[0;0m"
+        execute_command git -C "$opt_home/$_repo" "${opt_git[@]}"
+    done < <(subcommand_list)
+}
+
+function subcommand_exec()
+{
+    while IFS=$'\n' read -r _repo
+    do
+        echo -e "\033[96m$_repo\033[0m"
+        (cd "$opt_home/$_repo" && execute_command "${opt_exec[@]}")
+    done < <(subcommand_list)
+}
+
+function subcommand_list()
+{
+    find "$opt_home" -mindepth 4 -maxdepth 4 -type d -name .git -print |
+        grep -E "${opt_fqdn:-[^/]+}/${opt_user:-[^/]+}/${opt_name:-[^/]+}/.git$" |
+        sort |
+        cut -c "$((${#opt_home} + 2))-" |
+        sed -e 's/\/\.git$//'
+}
+
+if [ ! -z "${opt_git:-}" ]; then
+    subcommand_git
+    exit $?
+fi
+
+if [ ! -z "${opt_exec:-}" ]; then
+    subcommand_exec
+    exit $?
+fi
+
+if ((opt_list == 1)); then
+    subcommand_list
+    exit $?
+fi

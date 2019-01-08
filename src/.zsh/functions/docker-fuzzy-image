@@ -1,0 +1,54 @@
+local _accept=1
+local _query=
+local _key
+local _item
+local _id
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _item
+} < <({
+    echo $'ID\tREPOSITORY:TAG\tCREATED\tSIZE'
+    docker image ls --format=$'{{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}' | sort -t $'\t' -k 2
+} | column -ts $'\t' | fzf \
+    --header='enter: inspect | C-r: run | C-d: delete | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+    --header-lines=1 \
+    --query="$_query" \
+    --print-query \
+    --bind='enter:execute(
+            local _id=$(cut -c -12 <<<{})
+            docker image inspect "$_id" | jq -C . | less >/dev/tty
+        )' \
+    --expect='ctrl-r,ctrl-d,ctrl-i,ctrl-l,ctrl-x'
+)
+do
+    _id=$(cut -c -12 <<<"$_item")
+
+    case "$_key" in
+        ctrl-r)
+            BUFFER=" docker container run --rm -it $_id"
+            ;;
+        ctrl-d)
+            BUFFER=" docker image rm $_id"
+            ;;
+        ctrl-i)
+            LBUFFER+=$_id
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+        ctrl-x)
+            _accept=$(( 1 - _accept ))
+            continue
+            ;;
+    esac
+
+    if (( _accept )); then
+        zle accept-line
+    else
+        CURSOR=$#BUFFER
+    fi
+    return
+done

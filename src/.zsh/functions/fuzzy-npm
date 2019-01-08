@@ -1,0 +1,51 @@
+[ -f package.json ] || return 1
+
+if [ -f yarn.lock ]; then
+    NPM=yarn
+else
+    NPM=npm
+fi
+
+local _accept=1
+local _query
+local _key
+local _branch
+local _location
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _item
+} < <(jq -Mr '.scripts | keys | .[]' package.json | fzf \
+    --header='enter: run | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+    --query="$_query" \
+    --print-query \
+    --expect='enter,ctrl-i,ctrl-l,ctrl-x'
+)
+do
+    _id=$(cut -c -12 <<<"$_item")
+
+    case "$_key" in
+        enter)
+            BUFFER=" $NPM run $_item"
+            ;;
+        ctrl-i)
+            LBUFFER+=$_id
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+        ctrl-x)
+            _accept=$(( 1 - _accept ))
+            continue
+            ;;
+    esac
+
+    if (( _accept )); then
+        zle accept-line
+    else
+        CURSOR=$#BUFFER
+    fi
+    return
+done

@@ -1,0 +1,72 @@
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
+
+local _accept=1
+local _query
+local _key
+local _branch
+local _location
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _branch
+} < <(git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' | fzf \
+    --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+    --query=$_query \
+    --print-query \
+    --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-i,ctrl-l,ctrl-x'
+)
+do
+    _branch=${_branch% -> *}
+    _branch=${_branch#??}
+
+    if grep -qE "^remotes/" <<<"$_branch"; then
+        _location='remote'
+        _branch=${_branch#remotes/}
+    else
+        _location='local'
+    fi
+
+    case "$_key:$_location" in
+        enter:remote)
+            BUFFER=" git checkout --track $_branch"
+            ;;
+        enter:local)
+            BUFFER=" git checkout $_branch"
+            ;;
+        ctrl-n:*)
+            BUFFER=" git checkout -b "
+            _accept=0
+            ;;
+        ctrl-d:remote)
+            BUFFER=" git push ${_branch%%/*} :${_branch#*/}"
+            ;;
+        ctrl-d:local)
+            BUFFER=" git branch -D $_branch"
+            ;;
+        ctrl-p:remote)
+            continue
+            ;;
+        ctrl-p:local)
+            BUFFER=" git push -u $(git remote | head -1) $_branch"
+            ;;
+        ctrl-i:*)
+            LBUFFER+=$_branch
+            return
+            ;;
+        ctrl-l:*)
+            continue
+            ;;
+        ctrl-x:*)
+            _accept=$(( 1 - _accept ))
+            continue
+            ;;
+    esac
+
+    if (( _accept )); then
+        zle accept-line
+    else
+        CURSOR=$#BUFFER
+    fi
+    return
+done

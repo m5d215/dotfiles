@@ -1,0 +1,69 @@
+local _find_opts=(-o)
+local _find_opt_type=
+local _accept=1
+local _query
+local _key
+local _name
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _name
+} < <(find -L "$PWD" -type d \( -name .git -o -name node_modules \) -prune "${_find_opts[@]}" -print0 2>/dev/null | fzf \
+    --header='enter: cd | C-d: show dirs | C-f: show files | C-v: vi | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+    --preview="preview '{}' $((LINES - 2))" \
+    --query="${_query:-}" \
+    --print-query \
+    --bind='ctrl-v:execute(vi {} </dev/tty >/dev/tty)' \
+    --expect='enter,ctrl-d,ctrl-f,ctrl-i,ctrl-l,ctrl-x' \
+    --read0
+)
+do
+    case "$_key" in
+        enter)
+            if [ -d "$_name" ]; then
+                BUFFER=" cd ${(q)_name}"
+            else
+                BUFFER=" cd ${(q)_name%/*}"
+            fi
+            ;;
+        ctrl-d)
+            if [ "$_find_opt_type" = 'd' ]; then
+                _find_opt_type=
+                _find_opts=(-o)
+            else
+                _find_opt_type='d'
+                _find_opts=(-o -type d)
+            fi
+            continue
+            ;;
+        ctrl-f)
+            if [ "$_find_opt_type" = 'f' ]; then
+                _find_opt_type=
+                _find_opts=(-o)
+            else
+                _find_opt_type='f'
+                _find_opts=(-o -type f)
+            fi
+            continue
+            ;;
+        ctrl-i)
+            LBUFFER+=$_name
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+        ctrl-x)
+            _accept=$(( 1 - _accept ))
+            continue
+            ;;
+    esac
+
+    if (( _accept )); then
+        zle accept-line
+    else
+        CURSOR=$#BUFFER
+    fi
+    return
+done

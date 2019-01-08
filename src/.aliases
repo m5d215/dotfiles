@@ -1,0 +1,40 @@
+# cd
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ~='cd ~'
+
+# git
+alias a='git add'
+alias d='git diff'
+alias s='git status --short --branch'
+alias g='git graph'
+
+# grep
+alias grep='grep --color=auto'
+
+# less
+alias less='less --tabs=4'
+
+# ls
+case "$OSTYPE" in
+darwin*)
+    alias ls='ls -G'
+    ;;
+linux*|msys)
+    alias ls='ls --color'
+    ;;
+esac
+
+alias l='ls -lF'
+alias ll='ls -alF'
+
+# explore
+function explore-source()
+{
+    PWD=$HOME/dev/src explore
+}
+
+# ssh
+alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'

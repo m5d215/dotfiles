@@ -1,0 +1,44 @@
+local _accept=1
+local _query
+local _key
+local _command
+
+if (( $#BUFFER != 0 )); then
+    _query="^$BUFFER"
+fi
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _command
+} < <(history -nr 1 | fzf \
+    --header='enter: execute | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+    --query="$_query" \
+    --print-query \
+    --expect='enter,ctrl-i,ctrl-l,ctrl-x')
+do
+    case "$_key" in
+        enter)
+            BUFFER=$_command
+            ;;
+        ctrl-i)
+            LBUFFER+=$_command
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+        ctrl-x)
+            _accept=$(( 1 - _accept ))
+            continue
+            ;;
+    esac
+
+    if (( _accept )); then
+        zle accept-line
+    else
+        CURSOR=$#BUFFER
+        zle reset-prompt
+    fi
+    return
+done

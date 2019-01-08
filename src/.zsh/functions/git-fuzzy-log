@@ -1,0 +1,42 @@
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
+
+local _query
+local _key
+local _item
+local _commit
+
+while {
+    IFS= read -r _query
+    IFS= read -r _key
+    IFS= read -r _item
+} < <(git log --graph --color --all --date-order --decorate --oneline | fzf \
+    --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
+    --preview='
+            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<{})
+            [ ! -z "$_commit" ] && git show --color=always "$_commit"
+        ' \
+    --bind='ctrl-f:execute(
+            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<{})
+            [ ! -z "$_commit" ] && git show --color=always --name-status "$_commit" >/dev/tty
+        )' \
+    --bind='enter:execute(
+            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<{})
+            [ ! -z "$_commit" ] && git show --color=always "$_commit" >/dev/tty
+        )' \
+    --query=$_query \
+    --print-query \
+    --expect='ctrl-i,ctrl-l'
+)
+do
+    _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<"$_item")
+
+    case "$_key" in
+        ctrl-i)
+            LBUFFER+=$_commit
+            return
+            ;;
+        ctrl-l)
+            continue
+            ;;
+    esac
+done

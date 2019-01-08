@@ -1,0 +1,423 @@
+#!/bin/bash
+
+set -e
+set -u
+
+ARGPARSE_AGGRESSIVE_EAT=${ARGPARSE_AGGRESSIVE_EAT:-0}
+
+# Compile $ARGPARSE_OPTS to internal representation.
+function argparse_compile()
+{
+    local _opts
+    local _description
+    local _required
+    local _nargs
+    local _keyword
+    local _name
+    
+    for _opts in "${ARGPARSE_OPTS[@]}"
+    do
+        _description=${_opts#* -- }
+        _opts=${_opts%% -- *}
+        
+        if [ "${_opts: -1}" == '!' ]; then
+            _required=1
+            _opts=${_opts%?}
+        else
+            _required=0
+        fi
+        
+        _nargs=${_opts: -1}
+        _opts=${_opts%?}
+        
+        _keyword=${_opts##* }
+        _keyword=${_keyword//-/_}
+        
+        for _name in $_opts
+        do
+            if [ "${#_name}" == 1 ]; then
+                _name=-$_name
+            else
+                _name=--$_name
+            fi
+            argparse_ir+=("$_keyword" "$_name" "$_nargs" "$_required" "$_description")
+            
+            if [ "$_name" == '-_' ]; then
+                if [ "$_nargs" == '?' ]; then
+                    echo "ARGPARSE ERROR: The switch option can not be the rest option." >&2
+                    return 2
+                fi
+                argparse_rest+=("$_keyword")
+            fi
+        done
+        
+        if ((_required == 1)); then
+            if [ "$_nargs" == '?' ]; then
+                echo "ARGPARSE ERROR: The switch option can not be the required option." >&2
+                return 2
+            fi
+            argparse_requires+=("$_keyword")
+        fi
+    done
+}
+
+argparse_ir=()
+argparse_rest=()
+argparse_requires=()
+argparse_compile
+unset argparse_compile
+
+# Declare the switch option variables.
+function argparse_declare_switch()
+{
+    local _i
+    
+    for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
+    do
+        if [ "${argparse_ir[((_i + 2))]}" == '?' ]; then
+            eval "opt_${argparse_ir[$_i]}=0"
+        fi
+    done
+}
+
+argparse_declare_switch
+unset argparse_declare_switch
+
+# Parser state.
+argparse_state_keyword=''
+argparse_state_name=''
+argparse_state_nargs=''
+argparse_state_completed=''
+argparse_state_eat=0
+
+function argparse_escape()
+{
+    local _text
+    local _single_quotation_mark
+    local _double_quotation_mark
+    
+    _single_quotation_mark=$'\''
+    _double_quotation_mark='"'
+    
+    _text=${1//$_single_quotation_mark/\\\'}
+    _text=${_text//$_double_quotation_mark/\\\"}
+    echo "$'$_text'"
+}
+
+# Set the parser state from option name.
+function argparse_set_state()
+{
+    local _name
+    local _i
+    
+    _name=$1
+    
+    for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
+    do
+        if [ "${argparse_ir[((_i + 1))]}" == "$_name" ]; then
+            argparse_state_keyword=${argparse_ir[((_i + 0))]}
+            argparse_state_name=${argparse_ir[((_i + 1))]}
+            argparse_state_nargs=${argparse_ir[((_i + 2))]}
+            
+            case "$argparse_state_nargs" in
+            '?')
+                argparse_state_completed=1
+                eval "opt_$argparse_state_keyword=1"
+                ;;
+            ':')
+                argparse_state_completed=0
+                ;;
+            '*')
+                argparse_state_completed=1
+                eval "opt_$argparse_state_keyword=()"
+                if ((ARGPARSE_AGGRESSIVE_EAT != 0)); then
+                    argparse_state_eat=1
+                fi
+                ;;
+            '+')
+                argparse_state_completed=0
+                eval "opt_$argparse_state_keyword=()"
+                if ((ARGPARSE_AGGRESSIVE_EAT != 0)); then
+                    argparse_state_eat=1
+                fi
+                ;;
+            esac
+            
+            for ((_i = 0; _i < ${#argparse_rest[@]}; ++_i))
+            do
+                if [ "${argparse_rest[$_i]}" == "$argparse_state_keyword" ]; then
+                    argparse_rest=("${argparse_rest[@]:0:$_i}" "${argparse_rest[@]:((_i + 1)):((${#argparse_rest[@]}))}")
+                    break
+                fi
+            done
+            
+            for ((_i = 0; _i < ${#argparse_requires[@]}; ++_i))
+            do
+                if [ "${argparse_requires[$_i]}" == "$argparse_state_keyword" ]; then
+                    argparse_requires=("${argparse_requires[@]:0:$_i}" "${argparse_requires[@]:((_i + 1)):((${#argparse_requires[@]}))}")
+                    break
+                fi
+            done
+            
+            return 0
+        fi
+    done
+    
+    echo "ERROR: Undefined option '$_name'." >&2
+    return 1
+}
+
+# Set the parser state to the rest option.
+function argparse_next_rest()
+{
+    while ((ARGPARSE_AGGRESSIVE_EAT == 0)) && (($# != 0))
+    do
+        if [[ "$1" =~ ^- ]]; then
+            echo 'ERROR: Rest option must be last.' >&2
+            return 1
+        fi
+        shift
+    done
+    
+    if ((${#argparse_rest[@]} != 0)); then
+        argparse_set_state "--${argparse_rest[0]}"
+    else
+        return 1
+    fi
+}
+
+# Verify whether the option satisfies the value.
+function argparse_ensure_value()
+{
+    case "${argparse_state_nargs:- }" in
+    ' ')
+        ;;
+    '?')
+        ;;
+    ':')
+        if ((argparse_state_completed == 0)); then
+            echo "ERROR: Missing value for option '$argparse_state_name'." >&2
+            return 1
+        fi
+        ;;
+    '*')
+        ;;
+    '+')
+        if ((argparse_state_completed == 0)); then
+            echo "ERROR: Missing value for option '$argparse_state_name'." >&2
+            return 1
+        fi
+        ;;
+    esac
+}
+
+# Parse command line arguments.
+function argparse_parse()
+{
+    local _i
+    
+    while (($# != 0))
+    do
+        if ((argparse_state_eat == 0)) && [[ "$1" =~ ^-- ]]; then
+            argparse_ensure_value || return $?
+            argparse_set_state "$1" || return $?
+        elif ((argparse_state_eat == 0)) && [[ "$1" =~ ^- ]]; then
+            for ((_i = 1; _i < ${#1}; ++_i))
+            do
+                argparse_ensure_value || return $?
+                argparse_set_state "-${1:$_i:1}" || return $?
+            done
+        else
+            case "${argparse_state_nargs:- }" in
+            ' ')
+                argparse_next_rest "$@" || return $?
+                continue
+                ;;
+            '?')
+                if argparse_next_rest "$@"; then
+                    continue
+                else
+                    echo "ERROR: The switch option has a value." >&2
+                    return 1
+                fi
+                ;;
+            ':')
+                if ((argparse_state_completed == 0)); then
+                    argparse_state_completed=1
+                    eval "opt_$argparse_state_keyword=$(argparse_escape "$1")"
+                elif argparse_next_rest "$@"; then
+                    continue
+                else
+                    echo "ERROR: Too many values for option $argparse_state_name." >&2
+                    return 1
+                fi
+                ;;
+            '*')
+                eval "opt_$argparse_state_keyword+=($(argparse_escape "$1"))"
+                ;;
+            '+')
+                argparse_state_completed=1
+                eval "opt_$argparse_state_keyword+=($(argparse_escape "$1"))"
+                ;;
+            esac
+        fi
+        shift
+    done
+    
+    argparse_ensure_value || exit $?
+}
+
+argparse_parse "$@"
+unset argparse_state_keyword
+unset argparse_state_name
+unset argparse_state_nargs
+unset argparse_state_completed
+unset argparse_state_eat
+unset argparse_escape
+unset argparse_set_state
+unset argparse_next_rest
+unset argparse_ensure_value
+unset argparse_parse
+
+# Display help.
+if [ "${opt_help:-}" == '1' ]; then
+    function argparse_build_help_option()
+    {
+        local _keyword
+        local _nargs
+        local _required
+        local _rest
+        local _description
+        local _comma
+        
+        _nargs=$1
+        _required=$2
+        _rest=$3
+        _description=$4
+        shift 4
+        
+        _comma=0
+        
+        echo -n $'\t'
+        
+        while (($# != 0))
+        do
+            if [ "$1" == '-_' ]; then
+                shift
+                continue
+            fi
+            if ((_comma == 0)); then
+                _comma=1
+            else
+                echo -n ', '
+            fi
+            echo -en "\033[2m$1\033[0m"
+            shift
+        done
+        
+        case "$_nargs" in
+        '?')
+            echo
+            ;;
+        ':')
+            echo -e " \033[4mvalue\033[0m"
+            ;;
+        '*')
+            echo -e " [\033[4mvalue\033[0m]..."
+            ;;
+        '+')
+            echo -e " \033[4mvalue\033[0m [\033[4mvalue\033[0m]..."
+            ;;
+        esac
+        
+        case "$_required$_rest" in
+        '00')
+            echo -e "\t\t$_description"
+            ;;
+        '01')
+            echo -e "\t\t$_description (\033[36mrest\033[0m)"
+            ;;
+        '10')
+            echo -e "\t\t$_description (\033[32mrequired\033[0m)"
+            ;;
+        '11')
+            echo -e "\t\t$_description (\033[32mrequired\033[0m, \033[36mrest\033[0m)"
+            ;;
+        esac
+        
+        echo
+    }
+    
+    function argparse_help()
+    {
+        local _i
+        local _keyword
+        local _names
+        local _nargs
+        local _required
+        local _description
+        local _rest
+        
+        _keyword=''
+        _names=()
+        _nargs=' '
+        _required=0
+        _description=''
+        _rest=0
+        
+        echo -e "\033[2mNAME:\033[0m"
+        echo -e "\t$(basename "$0") - ${ARGPARSE_DESCRIPTION:-<description is not provided>}"
+        echo
+        
+        echo -e "\033[2mOPTIONS:\033[0m"
+        
+        for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
+        do
+            if [ "${argparse_ir[$_i]}" != "$_keyword" ] && ((${#_names[@]} != 0)); then
+                argparse_build_help_option "$_nargs" "$_required" "$_rest" "$_description" "${_names[@]}"
+                _names=()
+                _rest=0
+            fi
+            _keyword=${argparse_ir[$_i]}
+            if [ "${argparse_ir[((_i + 1))]}" == '-_' ]; then
+                _rest=1
+            else
+                _names+=("${argparse_ir[((_i + 1))]}")
+            fi
+            _nargs=${argparse_ir[((_i + 2))]}
+            _required=${argparse_ir[((_i + 3))]}
+            _description=${argparse_ir[((_i + 4))]}
+        done
+        
+        if ((${#_names[@]} != 0)); then
+            argparse_build_help_option "$_nargs" "$_required" "$_rest" "$_description" "${_names[@]}"
+        fi
+        
+        if [ ! -z "${ARGPARSE_EXAMPLES:-}" ]; then
+            echo -e "\033[2mEXAMPLES:\033[0m"
+            for ((_i = 0; _i < ${#ARGPARSE_EXAMPLES[@]}; ++_i))
+            do
+                echo -e "\t${ARGPARSE_EXAMPLES[$_i]}"
+            done
+        fi
+    }
+    
+    argparse_help
+    unset argparse_help
+    unset argparse_build_help_option
+    exit
+fi
+
+# Verify that required arguments are set.
+if ((${#argparse_requires[@]} != 0)); then
+    echo "ERROR: Missing required option --${argparse_requires[0]}" >&2
+    exit 1
+fi
+
+unset ARGPARSE_DESCRIPTION
+unset ARGPARSE_OPTS
+unset ARGPARSE_EXAMPLES
+unset ARGPARSE_AGGRESSIVE_EAT
+unset argparse_ir
+unset argparse_rest
+unset argparse_requires
