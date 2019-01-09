@@ -5,11 +5,15 @@ export LESSCHARSET=utf-8
 export TERM=xterm-256color
 export PATH=~/bin:$PATH
 
+if [ -d ~/Library/Python/2.7/bin ]; then
+    export PATH=~/Library/Python/2.7/bin:$PATH
+fi
+
 # powerline
 case "$OSTYPE" in
 darwin*)
-    if [ -d /usr/local/lib/python2.7/site-packages/powerline ]; then
-        export POWERLINE_HOME=/usr/local/lib/python2.7/site-packages/powerline
+    if [ -d ~/Library/Python/2.7/lib/python/site-packages/powerline ]; then
+        export POWERLINE_HOME=~/Library/Python/2.7/lib/python/site-packages/powerline
     fi
     ;;
 linux*)
