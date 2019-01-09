@@ -1,4 +1,5 @@
 set background=dark
+colorscheme hybrid_material
 
 " Enable syntax highlighting
 syntax on
@@ -55,9 +56,14 @@ set softtabstop=4
 set expandtab
 
 " Powerline
+let g:airline_powerline_fonts = 1
+
 if system('uname') =~ 'MINGW'
 else
-    set rtp+=$POWERLINE_HOME/bindings/vim
-    let g:Powerline_symbols = 'fancy'
-    set noshowmode
+    call plug#begin('~/.vim/plugged')
+
+    Plug 'kristijanhusak/vim-hybrid-material', {'do': 'cp -a colors ~/.vim/'}
+    Plug 'vim-airline/vim-airline'
+
+    call plug#end()
 endif
