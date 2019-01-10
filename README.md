@@ -5,7 +5,7 @@
 ## Linux
 
 ```sh
-curl -fsSL https://github.com/m5d215/dotfiles/raw/master/install.sh | sh -
+curl https://setup-shell.now.sh | sh -
 ```
 
 ## Windows

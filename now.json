@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "alias": "setup-shell",
+  "builds": [{ "src": "install.sh", "use": "@now/static" }],
+  "routes": [{ "src": "(.*)", "dest": "install.sh" }]
+}
