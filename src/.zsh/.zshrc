@@ -62,6 +62,11 @@ abbrev-alias -g _DELETE="-X DELETE"
 abbrev-alias -g F='| fzf'
 abbrev-alias -g FI='"$(find . -type d \( -name .git -o -name node_modules \) -prune -o -print | tail -n +2 | cut -c 3- | fzf)"'
 
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+    abbrev-alias -g C='| pbcopy'
+    abbrev-alias -g P='pbpaste'
+fi
+
 # key binding
 autoload -Uz cd-up
 autoload -Uz docker-fuzzy-container
