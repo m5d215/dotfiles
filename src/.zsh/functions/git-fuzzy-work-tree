@@ -14,7 +14,7 @@ while {
     --header-lines=1 \
     --preview='
             local _path={}
-            git diff --color=always -- "${_path#???}"
+            git diff --color=always -- "${_path#???}" | head -n "$LINES"
         ' \
     --bind='enter:execute(
             local _path={}

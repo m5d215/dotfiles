@@ -13,7 +13,7 @@ while {
     --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
     --preview='
             local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<{})
-            [ ! -z "$_commit" ] && git show --color=always "$_commit"
+            [ ! -z "$_commit" ] && git show --color=always "$_commit" | head -n "$(( LINES - 2 ))"
         ' \
     --bind='ctrl-f:execute(
             local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]+) .*/\1/" <<<{})
