@@ -20,6 +20,8 @@ powershell -Command Start-Process -Verb runas install.bat
 
 You can try my environment on Docker.
 
+![size and layers](https://images.microbadger.com/badges/image/m5d215/env.svg)
+
 ```sh
 docker container run --rm -it m5d215/env:latest
 ```
