@@ -25,7 +25,7 @@ RUN git clone https://github.com/m5d215/dotfiles.git ~/.ghq/github.com/m5d215/do
     ln -fsv ~/.ghq/github.com/m5d215/dotfiles/src/.tmux.conf        ~/.tmux.conf && \
     ln -fsv ~/.ghq/github.com/m5d215/dotfiles/src/.vimrc            ~/.vimrc && \
     ln -fsv ~/.ghq/github.com/m5d215/dotfiles/src/.zshenv           ~/.zshenv && \
-    zsh -ic 'exit' && \
+    zsh -c '. /root/.zshenv && . /root/.zsh/.zshrc' && \
     bash -c "vim -u <(sed -e '/colorscheme/d' /root/.vimrc) +PlugInstall +qall </dev/null >/dev/null 2>/dev/null"
 
 ENTRYPOINT ["/bin/zsh"]
