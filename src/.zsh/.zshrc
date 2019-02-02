@@ -40,13 +40,16 @@ zplug load
 . ~/.aliases
 
 # abbrev-alias
-abbrev-alias -g G='| grep --color=yes -n'
+abbrev-alias -g G='| grep --color=yes -Hn'
+abbrev-alias -g GI='| grep --color=yes -Hn TODO | grep-view'
 abbrev-alias -g L='| less'
 
 abbrev-alias -g X='| xargs'
 abbrev-alias -g X0='| xargs -0'
-abbrev-alias -g XG='| xargs grep --color=yes -n'
-abbrev-alias -g X0G='| xargs -0 grep --color=yes -n'
+abbrev-alias -g XG='| xargs grep --color=yes -Hn'
+abbrev-alias -g XGI='| xargs grep --color=yes -Hn TODO | grep-view'
+abbrev-alias -g X0G='| xargs -0 grep --color=yes -Hn'
+abbrev-alias -g X0GI='| xargs -0 grep --color=yes -Hn TODO | grep-view'
 
 abbrev-alias -g FF='find . -type f -name'
 abbrev-alias -g FD='find . -type d -name'
