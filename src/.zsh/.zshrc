@@ -28,6 +28,7 @@ zplug b4b4r07/enhancd, use:init.sh
 zplug hlissner/zsh-autopair, defer:2
 zplug junegunn/fzf-bin, as:command, from:gh-r, rename-to:fzf
 zplug junegunn/fzf, as:command, use:bin/fzf-tmux
+zplug m5d215/grep-view, as:command, use:bin/grep-view
 zplug momo-lab/zsh-abbrev-alias, defer:2
 zplug zsh-users/zsh-autosuggestions
 zplug zsh-users/zsh-completions
