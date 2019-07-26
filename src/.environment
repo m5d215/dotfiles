@@ -9,11 +9,17 @@ if [ -d ~/Library/Python/2.7/bin ]; then
     export PATH=~/Library/Python/2.7/bin:$PATH
 fi
 
+if [ -d ~/Library/Python/3.7/bin ]; then
+    export PATH=~/Library/Python/3.7/bin:$PATH
+fi
+
 # powerline
 case "$OSTYPE" in
 darwin*)
     if [ -d ~/Library/Python/2.7/lib/python/site-packages/powerline ]; then
         export POWERLINE_HOME=~/Library/Python/2.7/lib/python/site-packages/powerline
+    elif [ -d ~/Library/Python/3.7/lib/python/site-packages/powerline ]; then
+        export POWERLINE_HOME=~/Library/Python/3.7/lib/python/site-packages/powerline
     fi
     ;;
 linux*)
