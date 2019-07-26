@@ -29,11 +29,6 @@ linux*)
     ;;
 esac
 
-# nodebrew
-if [ -d ~/.nodebrew/current/bin ]; then
-    export PATH=~/.nodebrew/current/bin:$PATH
-fi
-
 # load user configuration
 if [ -f ~/.config/shell/.environment ]; then
     . ~/.config/shell/.environment
