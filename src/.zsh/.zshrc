@@ -37,12 +37,29 @@ compinit -C
 
 # powerline
 if command -v powerline-go >/dev/null; then
+    zmodload zsh/datetime
+
+    function preexec() {
+        __TIMER=$EPOCHREALTIME
+    }
+
     function powerline_precmd() {
+        local __ERRCODE=$?
+        local __DURATION=0
+
+        if [ -n "$__TIMER" ]; then
+            local __ERT=$EPOCHREALTIME
+            __DURATION="$((__ERT - ${__TIMER:-__ERT}))"
+            __DURATION=${__DURATION%%.*} # floor
+            unset __TIMER
+        fi
+
         eval "$(powerline-go \
-            -error $? \
+            -duration $__DURATION \
+            -error $__ERRCODE \
             -eval \
             -modules ssh,cwd,perms,jobs,exit \
-            -modules-right git \
+            -modules-right duration,git \
             -numeric-exit-codes \
             -path-aliases \~/.ghq=@GIT \
             -shell zsh \
