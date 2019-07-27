@@ -15,6 +15,26 @@ function zshaddhistory()
     (( $#1 > 3 ))
 }
 
+# zplugin
+. "$ZDOTDIR/.zplugin/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+
+zplugin load hlissner/zsh-autopair
+zplugin ice from"gh-r" as"command"
+zplugin load junegunn/fzf-bin
+zplugin ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
+zplugin load justjanne/powerline-go
+zplugin ice as"command" pick"bin/grep-view"
+zplugin load m5d215/grep-view
+zplugin load momo-lab/zsh-abbrev-alias
+zplugin load zsh-users/zsh-autosuggestions
+zplugin load zsh-users/zsh-completions
+zplugin load zsh-users/zsh-syntax-highlighting
+
+autoload -U compinit
+compinit -C
+
 # powerline
 if command -v powerline-go >/dev/null; then
     function powerline_precmd() {
@@ -46,23 +66,6 @@ elif [ ! -z "${POWERLINE_HOME:-}" ] && [ -d "$POWERLINE_HOME" ]; then
     powerline-daemon --quiet
     . "$POWERLINE_HOME/bindings/zsh/powerline.zsh"
 fi
-
-# zplug
-. "$ZPLUG_HOME/init.zsh"
-
-zplug b4b4r07/enhancd, use:init.sh
-zplug hlissner/zsh-autopair, defer:2
-zplug junegunn/fzf-bin, as:command, from:gh-r, rename-to:fzf
-zplug junegunn/fzf, as:command, use:bin/fzf-tmux
-zplug justjanne/powerline-go, as:command, from:gh-r
-zplug m5d215/grep-view, as:command, use:bin/grep-view
-zplug momo-lab/zsh-abbrev-alias, defer:2
-zplug zsh-users/zsh-autosuggestions
-zplug zsh-users/zsh-completions
-zplug zsh-users/zsh-syntax-highlighting
-
-zplug check --verbose || zplug install
-zplug load
 
 . ~/.aliases
 
