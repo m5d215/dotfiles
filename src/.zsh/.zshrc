@@ -16,7 +16,33 @@ function zshaddhistory()
 }
 
 # powerline
-if [ ! -z "${POWERLINE_HOME:-}" ] && [ -d "$POWERLINE_HOME" ]; then
+if command -v powerline-go >/dev/null; then
+    function powerline_precmd() {
+        eval "$(powerline-go \
+            -error $? \
+            -eval \
+            -modules ssh,cwd,perms,jobs,exit \
+            -modules-right git \
+            -numeric-exit-codes \
+            -path-aliases \~/.ghq=@GIT \
+            -shell zsh \
+        )"
+    }
+
+    function install_powerline_precmd() {
+        for s in "${precmd_functions[@]}"
+        do
+            if [ "$s" = "powerline_precmd" ]; then
+                return
+            fi
+        done
+        precmd_functions+=(powerline_precmd)
+    }
+
+    if [ "$TERM" != "linux" ]; then
+        install_powerline_precmd
+    fi
+elif [ ! -z "${POWERLINE_HOME:-}" ] && [ -d "$POWERLINE_HOME" ]; then
     powerline-daemon --quiet
     . "$POWERLINE_HOME/bindings/zsh/powerline.zsh"
 fi
@@ -28,6 +54,7 @@ zplug b4b4r07/enhancd, use:init.sh
 zplug hlissner/zsh-autopair, defer:2
 zplug junegunn/fzf-bin, as:command, from:gh-r, rename-to:fzf
 zplug junegunn/fzf, as:command, use:bin/fzf-tmux
+zplug justjanne/powerline-go, as:command, from:gh-r
 zplug m5d215/grep-view, as:command, use:bin/grep-view
 zplug momo-lab/zsh-abbrev-alias, defer:2
 zplug zsh-users/zsh-autosuggestions
