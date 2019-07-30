@@ -79,9 +79,6 @@ if command -v powerline-go >/dev/null; then
     if [ "$TERM" != "linux" ]; then
         install_powerline_precmd
     fi
-elif [ ! -z "${POWERLINE_HOME:-}" ] && [ -d "$POWERLINE_HOME" ]; then
-    powerline-daemon --quiet
-    . "$POWERLINE_HOME/bindings/zsh/powerline.zsh"
 fi
 
 . ~/.aliases

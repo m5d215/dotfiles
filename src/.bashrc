@@ -1,11 +1,5 @@
 [ -z "$PS1" ] && return
 
-# powerline
-if [ ! -z "${POWERLINE_HOME:-}" ] && [ -d "$POWERLINE_HOME" ]; then
-    powerline-daemon --quiet
-    . "$POWERLINE_HOME/bindings/bash/powerline.sh"
-fi
-
 # windows
 if [ "$OSTYPE" == 'msys' ]; then
     # prompt
