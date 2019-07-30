@@ -130,7 +130,6 @@ zle -N cd-up
 zle -N docker-fuzzy-container
 zle -N docker-fuzzy-image
 zle -N explore
-zle -N explore-source
 zle -N git-fuzzy-branch
 zle -N git-fuzzy-log
 zle -N git-fuzzy-work-tree
@@ -140,7 +139,6 @@ bindkey '^^' cd-up
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image
 bindkey '^e^e' explore
-bindkey '^e^g' explore-source
 bindkey '^g^r' git-fuzzy-branch
 bindkey '^g^g' git-fuzzy-log
 bindkey '^g^w' git-fuzzy-work-tree
