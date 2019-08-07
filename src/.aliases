@@ -30,5 +30,14 @@ esac
 alias l='ls -lF'
 alias ll='ls -alF'
 
+if command -v exa >/dev/null 2>&1; then
+    alias exa='exa --classify --color=always --group --header --git --time-style long-iso'
+
+    unalias l
+    unalias ll
+    alias l='exa --long'
+    alias ll='exa --long --all'
+fi
+
 # ssh
 alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'
