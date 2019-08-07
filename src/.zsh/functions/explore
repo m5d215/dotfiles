@@ -11,7 +11,15 @@ while {
     IFS= read -r _name
 } < <(find -L "$PWD" -type d \( -name .git -o -name node_modules \) -prune "${_find_opts[@]}" -print0 2>/dev/null | fzf \
     --header='enter: cd | C-d: show dirs | C-f: show files | C-v: vi | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
-    --preview="preview '{}' $((LINES - 2))" \
+    --preview="
+        local _path={}
+        echo $_path
+        _path=\${_path##*── }
+        if [ -d "\$_path" ]; then
+            exa --long --classify --color=always --all --header --git --time-style long-iso "\$_path"
+        else
+            bat --style=changes,numbers --line-range 1:$((LINES - 2)) --color=always "\$_path"
+        fi" \
     --query="${_query:-}" \
     --print-query \
     --bind='ctrl-v:execute(vi {} </dev/tty >/dev/tty)' \
