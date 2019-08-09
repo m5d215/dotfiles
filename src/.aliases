@@ -41,3 +41,9 @@ fi
 
 # ssh
 alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'
+
+# google
+function google()
+{
+    open -a 'Google Chrome' "https://google.co.jp/search?q=$*"
+}
