@@ -126,6 +126,7 @@ autoload -Uz git-fuzzy-log
 autoload -Uz git-fuzzy-work-tree
 autoload -Uz fuzzy-history
 autoload -Uz fuzzy-npm
+autoload -Uz ls-now
 zle -N cd-up
 zle -N docker-fuzzy-container
 zle -N docker-fuzzy-image
@@ -135,6 +136,7 @@ zle -N git-fuzzy-log
 zle -N git-fuzzy-work-tree
 zle -N fuzzy-history
 zle -N fuzzy-npm
+zle -N ls-now
 bindkey '^^' cd-up
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image
@@ -144,6 +146,7 @@ bindkey '^g^g' git-fuzzy-log
 bindkey '^g^w' git-fuzzy-work-tree
 bindkey '^g^n' fuzzy-npm
 bindkey '^r' fuzzy-history
+bindkey '^e^l' ls-now
 
 # load user configuration
 if [ -f ~/.config/shell/.usershell ]; then
