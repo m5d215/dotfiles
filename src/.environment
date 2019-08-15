@@ -14,6 +14,11 @@ if [ -d ~/Library/Python/3.7/bin ]; then
     export PATH=~/Library/Python/3.7/bin:$PATH
 fi
 
+# iCloud
+if [ -d "$HOME/Library/Mobile Documents/com~apple~CloudDocs" ]; then
+    export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+fi
+
 # load user configuration
 if [ -f ~/.config/shell/.environment ]; then
     . ~/.config/shell/.environment
