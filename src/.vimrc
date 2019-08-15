@@ -67,3 +67,6 @@ else
 
     call plug#end()
 endif
+
+" Key bindings
+inoremap <silent> jj <ESC>
