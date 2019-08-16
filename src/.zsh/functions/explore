@@ -5,16 +5,44 @@ local _query
 local _key
 local _name
 
+function disable-common-path()
+{
+    local _parent=$1
+    local _path=$2
+
+    if [[ $_path =~ ^$_parent/ ]]; then
+        echo -e "\033[90m$_parent/\033[0m${_path:$(( $#_parent + 1 ))}"
+    elif [ "$_parent" != "${_parent%/*}" ]; then
+        disable-common-path "${_parent%/*}" "$_path"
+    else
+        echo "$_path"
+    fi
+}
+
+function ls-tree()
+{
+    local _path
+    local _previous
+
+    while read -r _path
+    do
+        if [ -z "$_previous" ]; then
+            echo "$_path"
+        else
+            disable-common-path "$_previous" "$_path"
+        fi
+        _previous=$_path
+    done < <(find -L "$PWD" -type d \( -name .git -o -name node_modules \) -prune "${_find_opts[@]}" -print 2>/dev/null | sed -E "s#^$PWD/##")
+}
+
 while {
     IFS= read -r _query
     IFS= read -r _key
     IFS= read -r _name
-} < <(find -L "$PWD" -type d \( -name .git -o -name node_modules \) -prune "${_find_opts[@]}" -print0 2>/dev/null | fzf \
+} < <(ls-tree | fzf \
     --header='enter: cd | C-d: show dirs | C-f: show files | C-v: vi | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
     --preview="
         local _path={}
-        echo $_path
-        _path=\${_path##*── }
         if [ -d "\$_path" ]; then
             exa --long --classify --color=always --all --header --git --time-style long-iso "\$_path"
         else
@@ -23,8 +51,7 @@ while {
     --query="${_query:-}" \
     --print-query \
     --bind='ctrl-v:execute(vi {} </dev/tty >/dev/tty)' \
-    --expect='enter,ctrl-d,ctrl-f,ctrl-i,ctrl-l,ctrl-x' \
-    --read0
+    --expect='enter,ctrl-d,ctrl-f,ctrl-i,ctrl-l,ctrl-x'
 )
 do
     case "$_key" in
