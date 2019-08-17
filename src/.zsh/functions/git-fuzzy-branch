@@ -11,6 +11,7 @@ while {
     IFS= read -r _key
     IFS= read -r _branch
 } < <(git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' | fzf \
+    --height=$(( $(git branch --all | grep -cvE '(^|/)HEAD') + 3 )) \
     --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
     --query=$_query \
     --print-query \
@@ -52,6 +53,7 @@ do
             ;;
         ctrl-i:*)
             LBUFFER+=$_branch
+            zle reset-prompt
             return
             ;;
         ctrl-l:*)
@@ -63,6 +65,8 @@ do
             ;;
     esac
 
+    zle reset-prompt
+
     if (( _accept )); then
         zle accept-line
     else
@@ -70,3 +74,5 @@ do
     fi
     return
 done
+
+zle reset-prompt
