@@ -17,6 +17,7 @@ while {
     IFS= read -r _key
     IFS= read -r _item
 } < <(jq -Mr '.scripts | keys | .[]' package.json | fzf \
+    --height=$(( $(jq -Mr '.scripts | keys | length' package.json) + 3 )) \
     --header='enter: run | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
     --query="$_query" \
     --print-query \
@@ -31,6 +32,7 @@ do
             ;;
         ctrl-i)
             LBUFFER+=$_id
+            zle reset-prompt
             return
             ;;
         ctrl-l)
@@ -42,6 +44,8 @@ do
             ;;
     esac
 
+    zle reset-prompt
+
     if (( _accept )); then
         zle accept-line
     else
@@ -49,3 +53,5 @@ do
     fi
     return
 done
+
+zle reset-prompt
