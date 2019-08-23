@@ -12,6 +12,7 @@ while {
     echo $'ID\tREPOSITORY:TAG\tCREATED\tSIZE'
     docker image ls --format=$'{{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}' | sort -t $'\t' -k 2
 } | column -ts $'\t' | fzf \
+    --height=$(( $(docker image ls --quiet | wc -l) + 4 )) \
     --header='enter: inspect | C-r: run | C-d: delete | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
     --header-lines=1 \
     --query="$_query" \
@@ -34,6 +35,7 @@ do
             ;;
         ctrl-i)
             LBUFFER+=$_id
+            zle reset-prompt
             return
             ;;
         ctrl-l)
@@ -45,6 +47,8 @@ do
             ;;
     esac
 
+    zle reset-prompt
+
     if (( _accept )); then
         zle accept-line
     else
@@ -52,3 +56,5 @@ do
     fi
     return
 done
+
+zle reset-prompt
