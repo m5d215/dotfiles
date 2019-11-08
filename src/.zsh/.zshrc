@@ -111,6 +111,8 @@ abbrev-alias -g F='| fzf'
 abbrev-alias -g FP='| fzf --preview="head -$(( LINES - 2  )) {} | pygmentize"'
 abbrev-alias -g FI='"$(find . -type d \( -name .git -o -name node_modules \) -prune -o -print | tail -n +2 | cut -c 3- | fzf)"'
 
+abbrev-alias -g J='| jq .'
+
 if [[ "$OSTYPE" =~ ^darwin ]]; then
     abbrev-alias -g C='| pbcopy'
     abbrev-alias -g P='pbpaste'
