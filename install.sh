@@ -10,7 +10,6 @@ git clone https://github.com/m5d215/dotfiles.git "$ROOT"
 mkdir -p ~/.config
 mkdir -p ~/.zsh
 
-ln -fsv "$ROOT"/src/.config/powerline ~/.config/powerline
 ln -fsv "$ROOT"/src/.zsh/functions    ~/.zsh/functions
 ln -fsv "$ROOT"/src/.zsh/.zshrc       ~/.zsh/.zshrc
 ln -fsv "$ROOT"/src/bin               ~/bin
