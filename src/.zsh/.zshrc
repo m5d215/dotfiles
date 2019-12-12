@@ -25,8 +25,6 @@ zplugin ice from"gh-r" as"command"
 zplugin load junegunn/fzf-bin
 zplugin ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
 zplugin load justjanne/powerline-go
-zplugin ice as"command" pick"bin/grep-view"
-zplugin load m5d215/grep-view
 zplugin load momo-lab/zsh-abbrev-alias
 zplugin load zsh-users/zsh-autosuggestions
 zplugin load zsh-users/zsh-completions
@@ -85,15 +83,12 @@ fi
 
 # abbrev-alias
 abbrev-alias -g G='| grep --color=yes -Hn'
-abbrev-alias -g GI='| grep --color=yes -Hn TODO | grep-view'
 abbrev-alias -g L='| less'
 
 abbrev-alias -g X='| xargs'
 abbrev-alias -g X0='| xargs -0'
 abbrev-alias -g XG='| xargs grep --color=yes -Hn'
-abbrev-alias -g XGI='| xargs grep --color=yes -Hn TODO | grep-view'
 abbrev-alias -g X0G='| xargs -0 grep --color=yes -Hn'
-abbrev-alias -g X0GI='| xargs -0 grep --color=yes -Hn TODO | grep-view'
 
 abbrev-alias -g FF='find . -type f -name'
 abbrev-alias -g FD='find . -type d -name'
