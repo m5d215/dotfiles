@@ -8,8 +8,11 @@ ROOT=${ROOT:-~/.ghq/github.com/m5d215/dotfiles}
 git clone https://github.com/m5d215/dotfiles.git "$ROOT"
 
 mkdir -p ~/.config
+mkdir -p ~/.pmy
 mkdir -p ~/.zsh
 
+ln -fsv "$ROOT"/src/.pmy/rules        ~/.pmy/rules
+ln -fsv "$ROOT"/src/.pmy/snippets     ~/.pmy/snippets
 ln -fsv "$ROOT"/src/.zsh/functions    ~/.zsh/functions
 ln -fsv "$ROOT"/src/.zsh/.zshrc       ~/.zsh/.zshrc
 ln -fsv "$ROOT"/src/bin               ~/bin

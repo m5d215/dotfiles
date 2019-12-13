@@ -81,6 +81,9 @@ fi
 
 . ~/.aliases
 
+# pmy
+eval "$(pmy init)"
+
 # abbrev-alias
 abbrev-alias -g G='| grep --color=yes -Hn'
 abbrev-alias -g L='| less'
@@ -95,16 +98,7 @@ abbrev-alias -g FD='find . -type d -name'
 abbrev-alias -g FG='find . -type d -name .git -prune -o -print'
 abbrev-alias -g FGN='find . -type d \( -name .git -o -name node_modules \) -prune -o -print'
 
-abbrev-alias -g HJ="-H 'Content-Type: application/json'"
-abbrev-alias -g HL='127.0.0.1'
-
-abbrev-alias -g _POST="-X POST -H 'Content-Type: application/json' -d"
-abbrev-alias -g _PUT="-X PUT -H 'Content-Type: application/json' -d"
-abbrev-alias -g _DELETE="-X DELETE"
-
 abbrev-alias -g F='| fzf'
-abbrev-alias -g FP='| fzf --preview="head -$(( LINES - 2  )) {} | pygmentize"'
-abbrev-alias -g FI='"$(find . -type d \( -name .git -o -name node_modules \) -prune -o -print | tail -n +2 | cut -c 3- | fzf)"'
 
 abbrev-alias -g J='| jq .'
 

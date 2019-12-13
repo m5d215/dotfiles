@@ -1,0 +1,93 @@
+- description: (postfix completion) Insert sudo at the beginning
+  regexp-left: ^(?P<space>\s*)(?P<body>.+?) sudo$
+  buffer-left: <space>sudo <body>
+  buffer-right: '[]'
+
+- description: (postfix completion) Surround with "
+  regexp-left: ^(?P<body>.*?)"(?P<content>\S+)"$
+  buffer-left: <body><content>
+  buffer-right: '[]'
+
+- description: (postfix completion) Remove "
+  regexp-left: ^(?P<body>.*?)(?P<content>\S+)"$
+  buffer-left: <body>"<content>"
+  buffer-right: '[]'
+
+- description: (postfix completion) Surround with '
+  regexp-left: ^(?P<body>.*?)'(?P<content>\S+)'$
+  buffer-left: <body><content>
+  buffer-right: '[]'
+
+- description: (postfix completion) Remove '
+  regexp-left: ^(?P<body>.*?)(?P<content>\S+)'$
+  buffer-left: <body>'<content>'
+  buffer-right: '[]'
+
+- description: Suggest IP address
+  regexp-left: "(?P<protocol>https?)://$"
+  cmd-groups:
+    - stmt: '%ip%'
+      after: awk '{print $1}'
+  fuzzy-finder-cmd:
+    column -t |
+      fzf
+        --prompt='<protocol>://'
+        --height "$({ echo && echo && cat $HOME/.pmy/snippets/ip_pmy_snippet.txt } | wc -l | awk '{print $1}')"
+        --select-1
+        --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
+- description: Suggest curl options
+  regexp-left: "curl.* $"
+  cmd-groups:
+    - stmt: "%curl%"
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$({ echo && echo && cat $HOME/.pmy/snippets/curl_pmy_snippet.txt } | wc -l | awk '{print $1}')"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
+- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*\*$
+  cmd-groups:
+    - stmt:
+        fd
+          --hidden
+          --full-path
+          --exclude node_modules
+          --color always
+          --no-ignore
+          '<query>'
+          "$([ -n '<path>' ] && echo '<path>' || echo .)"
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height 75%
+      --select-1
+      --exit-0
+  buffer-left: <body>
+  buffer-right: '[]'
+
+- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*$
+  cmd-groups:
+    - stmt:
+        fd
+          --hidden
+          --full-path
+          --exclude .git
+          --exclude node_modules
+          --color always
+          --no-ignore
+          '<query>'
+          "$([ -n '<path>' ] && echo '<path>' || echo .)"
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height 75%
+      --select-1
+      --exit-0
+  buffer-left: <body>
+  buffer-right: '[]'

@@ -1,0 +1,5 @@
+-X POST 
+-X PUT 
+-X PATCH 
+-X DELETE 
+-H 'Content-Type: application/json' 
