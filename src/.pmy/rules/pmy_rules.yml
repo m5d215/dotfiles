@@ -51,6 +51,20 @@
   buffer-left: '[]'
   buffer-right: '[]'
 
+- description: Suggest npm scripts
+  regexp-left: (yarn|npm).* $
+  cmd-groups:
+    - stmt:
+        jq -cMr '.scripts | to_entries[] | "\\(.key)	\\(.value)"' package.json | column -ts '\t'
+      after: awk '{print $1}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$(jq -r '2 + (.scripts | length)' package.json)"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
 - regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*\*$
   cmd-groups:
     - stmt:
