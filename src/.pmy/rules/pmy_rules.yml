@@ -61,11 +61,11 @@
           --color always
           --no-ignore
           '<query>'
-          "$([ -n '<path>' ] && echo '<path>' || echo .)"
-      after: awk '{print $0}'
+          "$([ -n '<path>' ] && echo '<path>' || echo .)" |
+        taggo --tag '' --icon-indices 0 --icon-delimiter '  '
+      after: taggo --tag '' --icon-indices 0 --icon-delimiter '  ' --revert 2>/dev/null
   fuzzy-finder-cmd:
     fzf
-      --height 75%
       --select-1
       --exit-0
   buffer-left: <body>
@@ -82,11 +82,11 @@
           --color always
           --no-ignore
           '<query>'
-          "$([ -n '<path>' ] && echo '<path>' || echo .)"
-      after: awk '{print $0}'
+          "$([ -n '<path>' ] && echo '<path>' || echo .)" |
+        taggo --tag '' --icon-indices 0 --icon-delimiter '  '
+      after: taggo --tag '' --icon-indices 0 --icon-delimiter '  ' --revert 2>/dev/null
   fuzzy-finder-cmd:
     fzf
-      --height 75%
       --select-1
       --exit-0
   buffer-left: <body>
