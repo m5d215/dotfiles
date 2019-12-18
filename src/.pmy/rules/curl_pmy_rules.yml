@@ -1,0 +1,12 @@
+- description: Suggest curl options
+  regexp-left:  $
+  cmd-groups:
+    - stmt: '%curl%'
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$({ echo && echo && cat $HOME/.pmy/snippets/curl_pmy_snippet.txt } | wc -l | awk '{print $1}')"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
