@@ -5,7 +5,9 @@ set -u
 
 ROOT=${ROOT:-~/.ghq/github.com/m5d215/dotfiles}
 
-git clone https://github.com/m5d215/dotfiles.git "$ROOT"
+if [ ! -d "$ROOT" ]; then
+    git clone https://github.com/m5d215/dotfiles.git "$ROOT"
+fi
 
 mkdir -p ~/.config
 mkdir -p ~/.pmy

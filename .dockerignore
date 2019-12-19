@@ -3,6 +3,5 @@
 .editorconfig
 Dockerfile
 install.bat
-install.sh
 now.json
 README.md
