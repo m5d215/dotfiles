@@ -1,5 +1,5 @@
 - description: Suggest curl options
-  regexp-left:  $
+  regexp-left: ' $'
   cmd-groups:
     - stmt: '%curl%'
       after: awk '{print $0}'

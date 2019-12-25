@@ -1,5 +1,5 @@
 - description: Suggest ssh hosts
-  regexp-left:  $
+  regexp-left: ' $'
   cmd-groups:
     - stmt: grep -oE '^Host [^*]+$' ~/.ssh/config | cut -c 6-
       after: awk '{print $0}'

@@ -1,5 +1,5 @@
 - description: Suggest npm scripts
-  regexp-left:  $
+  regexp-left: ' run $'
   cmd-groups:
     - stmt:
         jq -cMr '.scripts | to_entries[] | "\\(.key)	\\(.value)"' package.json | column -ts '\t'
