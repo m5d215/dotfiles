@@ -3,7 +3,7 @@
 set -e
 set -u
 
-ROOT=${ROOT:-~/.ghq/github.com/m5d215/dotfiles}
+ROOT=${ROOT:-~/src/github.com/m5d215/dotfiles}
 
 if [ ! -d "$ROOT" ]; then
     git clone https://github.com/m5d215/dotfiles.git "$ROOT"

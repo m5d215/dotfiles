@@ -29,9 +29,9 @@ RUN curl -fsSL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.v
     git clone https://github.com/tmux-plugins/tpm.git ~/.tmux/plugins/tpm && \
     git clone https://github.com/zdharma/zplugin.git ~/.zsh/.zplugin/bin
 
-ADD . /root/.ghq/github.com/m5d215/dotfiles
+ADD . /root/src/github.com/m5d215/dotfiles
 
-RUN ~/.ghq/github.com/m5d215/dotfiles/install.sh && \
+RUN ~/src/github.com/m5d215/dotfiles/install.sh && \
     zsh -c '. /root/.zshenv && . /root/.zsh/.zshrc' && \
     bash -c "vim -u <(sed -e '/colorscheme/d' /root/.vimrc) +PlugInstall +qall </dev/null >/dev/null 2>/dev/null"
 

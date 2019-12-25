@@ -7,10 +7,10 @@ if [ "$OSTYPE" == 'msys' ]; then
     [ "$(pwd)" == / ] && cd ~
 
     # colorscheme
-    if [ ! -d ~/.ghq/github.com/sonatard/terminal-color-theme ]; then
-        git clone --recurse-submodules https://github.com/sonatard/terminal-color-theme ~/.ghq/github.com/sonatard/terminal-color-theme
+    if [ ! -d ~/src/github.com/sonatard/terminal-color-theme ]; then
+        git clone --recurse-submodules https://github.com/sonatard/terminal-color-theme ~/src/github.com/sonatard/terminal-color-theme
     fi
-    source ~/.ghq/github.com/sonatard/terminal-color-theme/color-theme-molokai/molokai.sh
+    source ~/src/github.com/sonatard/terminal-color-theme/color-theme-molokai/molokai.sh
 
     # PATH
     if [ -d "/C/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin" ]; then

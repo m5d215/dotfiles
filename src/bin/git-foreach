@@ -7,7 +7,7 @@ ARGPARSE_DESCRIPTION='execute command for each git repositories'
 ARGPARSE_OPTS=(
     '_ g git+ -- execute git command for each git repositories'
     'e exec+ -- execute shell command for each git repositories'
-    'C home: -- home (default: ~/dev/src)'
+    'C home: -- home (default: ~/src)'
     'l list? -- list git repositories'
     'f fqdn: -- filter by FQDN'
     'u user: -- filter by user'
@@ -27,12 +27,12 @@ ARGPARSE_EXAMPLES=(
 ARGPARSE_AGGRESSIVE_EAT=1
 source "$(dirname "$0")/argparse"
 
-opt_home=${opt_home:-$HOME/.ghq}
+opt_home=${opt_home:-$HOME/src}
 
 function execute_command()
 {
     local _line
-    
+
     while IFS=$'\n' read -r _line
     do
         echo -e "  \033[90m> $_line\033[0m"
