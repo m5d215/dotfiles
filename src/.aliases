@@ -47,3 +47,8 @@ function google()
 {
     open -a 'Google Chrome' "https://google.co.jp/search?q=$*"
 }
+
+function eijiro()
+{
+    open -a 'Google Chrome' "https://eow.alc.co.jp/search?q=$*"
+}
