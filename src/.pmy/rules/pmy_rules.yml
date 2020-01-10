@@ -38,6 +38,46 @@
   buffer-left: '[]'
   buffer-right: '[]'
 
+- description: Suggest curl options
+  regexp-left: 'curl.* $'
+  cmd-groups:
+    - stmt: '%curl%'
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$({ echo && echo && cat $HOME/.pmy/snippets/curl_pmy_snippet.txt } | wc -l | awk '{print $1}')"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
+- description: Suggest ssh hosts
+  regexp-left: 'ssh.* $'
+  cmd-groups:
+    - stmt: grep -oE '^Host [^*]+$' ~/.ssh/config | cut -c 6-
+      after: awk '{print $0}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$({ echo && echo && grep -oE '^Host [^*]+$' ~/.ssh/config } | wc -l | awk '{print $1}')"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
+- description: Suggest npm scripts
+  regexp-left: 'yarn.* $'
+  cmd-groups:
+    - stmt:
+        jq -cMr '.scripts | to_entries[] | "\\(.key)	\\(.value)"' package.json | column -ts '\t'
+      after: awk '{print $1}'
+  fuzzy-finder-cmd:
+    fzf
+      --height "$(jq -r '2 + (.scripts | length)' package.json)"
+      --select-1
+      --exit-0
+  buffer-left: '[]'
+  buffer-right: '[]'
+
 - regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*\*$
   cmd-groups:
     - stmt:
