@@ -78,7 +78,7 @@
   buffer-left: '[]'
   buffer-right: '[]'
 
-- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*\*$
+- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w-]+/)*)(?P<query>[.\w-]*)\*\*\*$
   cmd-groups:
     - stmt:
         fd
@@ -98,7 +98,7 @@
   buffer-left: <body>
   buffer-right: '[]'
 
-- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w]+/)*)(?P<query>[.\w]*)\*\*$
+- regexp-left: ^(?P<body>.*?)(?P<path>~?/?(?:[.\w-]+/)*)(?P<query>[.\w-]*)\*\*$
   cmd-groups:
     - stmt:
         fd
