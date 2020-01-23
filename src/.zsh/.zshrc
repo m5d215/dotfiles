@@ -107,6 +107,7 @@ abbrev-alias -g J='| jq .'
 
 if [[ "$OSTYPE" =~ ^darwin ]]; then
     abbrev-alias -g C='| pbcopy'
+    abbrev-alias -g CC='| tee >(pbcopy)'
     abbrev-alias -g P='pbpaste'
 fi
 
