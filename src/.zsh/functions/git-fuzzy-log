@@ -1,5 +1,21 @@
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
 
+function pretty_commit_message_prefix()
+{
+    sed -E $'
+        s/ feat:/ ✨/g;
+        s/ fix:/ 🐛/g;
+        s/ hotfix:/ 🚧/g;
+        s/ refactor:/ ♻️ /g;
+        s/ style:/ 🎨/g;
+        s/ perf:/ 🐎/g;
+        s/ test:/ 🚨/g;
+        s/ docs:/ 📚/g;
+        s/ chore:/ 🔧/g;
+        s/ Merge branch /  \ue0a0 Merge branch /g;
+    '
+}
+
 local _query
 local _key
 local _item
@@ -9,7 +25,7 @@ while {
     IFS= read -r _query
     IFS= read -r _key
     IFS= read -r _item
-} < <(git log --graph --color --all --date-order --decorate --oneline | fzf \
+} < <(git log --graph --color --all --date-order --decorate --oneline | pretty_commit_message_prefix | fzf \
     --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
     --preview='
             local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
