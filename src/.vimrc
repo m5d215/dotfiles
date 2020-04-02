@@ -58,15 +58,12 @@ set expandtab
 " Powerline
 let g:airline_powerline_fonts = 1
 
-if system('uname') =~ 'MINGW'
-else
-    call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 
-    Plug 'kristijanhusak/vim-hybrid-material', {'do': 'cp -a colors ~/.vim/'}
-    Plug 'vim-airline/vim-airline'
+Plug 'kristijanhusak/vim-hybrid-material', {'do': 'cp -a colors ~/.vim/'}
+Plug 'vim-airline/vim-airline'
 
-    call plug#end()
-endif
+call plug#end()
 
 " Key bindings
 inoremap <silent> jj <ESC>
