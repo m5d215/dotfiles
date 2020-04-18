@@ -1,1 +1,1 @@
-BUFFER=${BUFFER%|*}
+LBUFFER=${LBUFFER%|*}
