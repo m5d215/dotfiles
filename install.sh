@@ -13,17 +13,29 @@ mkdir -p ~/.config
 mkdir -p ~/.pmy
 mkdir -p ~/.zsh
 
-ln -fsv "$ROOT"/src/.pmy/rules        ~/.pmy/rules
-ln -fsv "$ROOT"/src/.pmy/snippets     ~/.pmy/snippets
-ln -fsv "$ROOT"/src/.zsh/functions    ~/.zsh/functions
-ln -fsv "$ROOT"/src/.zsh/.zshrc       ~/.zsh/.zshrc
-ln -fsv "$ROOT"/src/bin               ~/bin
-ln -fsv "$ROOT"/src/.aliases          ~/.aliases
-ln -fsv "$ROOT"/src/.bash_profile     ~/.bash_profile
-ln -fsv "$ROOT"/src/.bashrc           ~/.bashrc
-ln -fsv "$ROOT"/src/.editorconfig2    ~/.editorconfig
-ln -fsv "$ROOT"/src/.environment      ~/.environment
-ln -fsv "$ROOT"/src/.gitconfig        ~/.gitconfig
-ln -fsv "$ROOT"/src/.tmux.conf        ~/.tmux.conf
-ln -fsv "$ROOT"/src/.vimrc            ~/.vimrc
-ln -fsv "$ROOT"/src/.zshenv           ~/.zshenv
+function create_link()
+{
+    local _name
+    _name=$1
+
+    if [ -e "$HOME/$_name" ]; then
+        mv "$HOME/$_name" "$HOME/$_name.bak"
+    fi
+
+    ln -fsv "$ROOT/src/$_name" "$HOME/$_name"
+}
+
+create_link .pmy/rules
+create_link .pmy/snippets
+create_link .zsh/functions
+create_link .zsh/.zshrc
+create_link bin
+create_link .aliases
+create_link .bash_profile
+create_link .bashrc
+create_link .editorconfig2
+create_link .environment
+create_link .gitconfig
+create_link .tmux.conf
+create_link .vimrc
+create_link .zshenv
