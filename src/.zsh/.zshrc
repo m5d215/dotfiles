@@ -85,7 +85,9 @@ fi
 . ~/.aliases
 
 # pmy
-eval "$(pmy init)"
+if command -v pmy >/dev/null; then
+    eval "$(pmy init)"
+fi
 
 # abbrev-alias
 abbrev-alias -g G='| grep --color=yes -Hn'
