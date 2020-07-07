@@ -43,12 +43,14 @@ fi
 alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'
 
 # google
-function google()
-{
-    open -a 'Google Chrome' "https://google.co.jp/search?q=$*"
-}
+if command -v open >/dev/null 2>&1; then
+    function google()
+    {
+        open -a 'Google Chrome' "https://google.co.jp/search?q=$*"
+    }
 
-function eijiro()
-{
-    open -a 'Google Chrome' "https://eow.alc.co.jp/search?q=$*"
-}
+    function eijiro()
+    {
+        open -a 'Google Chrome' "https://eow.alc.co.jp/search?q=$*"
+    }
+fi

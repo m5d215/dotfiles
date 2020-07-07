@@ -5,7 +5,7 @@
 ## Linux
 
 ```sh
-curl https://setup-shell.now.sh | sh -
+curl https://setup-shell.vercel.app | sh -
 ```
 
 ## Windows
@@ -14,14 +14,4 @@ curl https://setup-shell.now.sh | sh -
 git clone https://github.com/m5d215/dotfiles.git ~/src/github.com/m5d215/dotfiles
 cd ~/src/github.com/m5d215/dotfiles
 powershell -Command Start-Process -Verb runas install.bat
-```
-
-## Play with Docker
-
-You can try my environment on Docker.
-
-![size and layers](https://images.microbadger.com/badges/image/m5d215/env.svg)
-
-```sh
-docker container run --rm -it m5d215/env:latest
 ```

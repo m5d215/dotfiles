@@ -40,9 +40,9 @@ create_link .tmux.conf
 create_link .vimrc
 create_link .zshenv
 
-# Install zplugin
-if [ ! -d ~/.zsh/.zplugin/bin ]; then
-    git clone https://github.com/zdharma/zplugin.git ~/.zsh/.zplugin/bin
+# Install zinit
+if [ ! -d ~/.zinit/bin ]; then
+    git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
 fi
 
 # Install Tmux Plugin Manager

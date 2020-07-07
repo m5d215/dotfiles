@@ -18,20 +18,20 @@ function zshaddhistory()
     (( $#1 > 3 ))
 }
 
-# zplugin
-. "$ZDOTDIR/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
+# zinit
+. "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-zplugin load hlissner/zsh-autopair
-zplugin ice from"gh-r" as"command"
-zplugin load junegunn/fzf-bin
-zplugin ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
-zplugin load justjanne/powerline-go
-zplugin load momo-lab/zsh-abbrev-alias
-zplugin load zsh-users/zsh-autosuggestions
-zplugin load zsh-users/zsh-completions
-zplugin load zsh-users/zsh-syntax-highlighting
+zinit load hlissner/zsh-autopair
+zinit ice from"gh-r" as"command"
+zinit load junegunn/fzf-bin
+zinit ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
+zinit load justjanne/powerline-go
+zinit load momo-lab/zsh-abbrev-alias
+zinit load zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-completions
+zinit load zsh-users/zsh-syntax-highlighting
 
 autoload -U compinit
 compinit -C
@@ -104,6 +104,7 @@ abbrev-alias -g FG='find . -type d -name .git -prune -o -print'
 abbrev-alias -g FGN='find . -type d \( -name .git -o -name node_modules \) -prune -o -print'
 
 abbrev-alias -g F='| fzf'
+abbrev-alias -g FP="| fzf --preview='bat --color=always --style=numbers {}' --preview-window=down"
 
 abbrev-alias -g J='| jq .'
 
@@ -141,8 +142,3 @@ bindkey '^g^w' git-fuzzy-work-tree
 bindkey '^r' fuzzy-history
 bindkey '^e^l' ls-now
 bindkey '^|' unpipe
-
-# load user configuration
-if [ -f ~/.config/shell/.usershell ]; then
-    . ~/.config/shell/.usershell
-fi

@@ -6,20 +6,17 @@ export LESSHISTFILE=-
 export TERM=xterm-256color
 export PATH=~/bin:$PATH
 
-if [ -d ~/Library/Python/2.7/bin ]; then
-    export PATH=~/Library/Python/2.7/bin:$PATH
-fi
-
-if [ -d ~/Library/Python/3.7/bin ]; then
-    export PATH=~/Library/Python/3.7/bin:$PATH
-fi
-
 # iCloud
 if [ -d "$HOME/Library/Mobile Documents/com~apple~CloudDocs" ]; then
     export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 fi
 
-# load user configuration
-if [ -f ~/.config/shell/.environment ]; then
-    . ~/.config/shell/.environment
+# Go
+if [ -d "${GOPATH:-$HOME/go}/bin" ]; then
+    export PATH="${GOPATH:-$HOME/go}/bin:$PATH"
+fi
+
+# pmy
+if command -v pmy >/dev/null; then
+    export PMY_TRIGGER_KEY=^I
 fi
