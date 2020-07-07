@@ -39,3 +39,19 @@ create_link .gitconfig
 create_link .tmux.conf
 create_link .vimrc
 create_link .zshenv
+
+# Install zplugin
+if [ ! -d ~/.zsh/.zplugin/bin ]; then
+    git clone https://github.com/zdharma/zplugin.git ~/.zsh/.zplugin/bin
+fi
+
+# Install Tmux Plugin Manager
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+    git clone https://github.com/tmux-plugins/tpm.git ~/.tmux/plugins/tpm
+fi
+
+# Install vim-plug
+if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fsSL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o ~/.vim/autoload/plug.vim --create-dirs
+    vim -u <(sed -e '/colorscheme/d' ~/.vimrc) +PlugInstall +qall </dev/null >/dev/null 2>&1
+fi
