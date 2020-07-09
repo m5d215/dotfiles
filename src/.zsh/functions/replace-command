@@ -1,0 +1,4 @@
+local _command
+_command=$BUFFER
+LBUFFER=$(sed -E 's/^( *).+$/\1/' <<<"$_command")
+RBUFFER=$(sed -E 's/^ *[^ ]+//' <<<"$_command")

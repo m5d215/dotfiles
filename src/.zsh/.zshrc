@@ -122,6 +122,7 @@ autoload -Uz git-fuzzy-branch
 autoload -Uz git-fuzzy-log
 autoload -Uz git-fuzzy-work-tree
 autoload -Uz fuzzy-history
+autoload -Uz replace-command
 autoload -Uz ls-now
 autoload -Uz unpipe
 zle -N cd-up
@@ -131,6 +132,7 @@ zle -N git-fuzzy-branch
 zle -N git-fuzzy-log
 zle -N git-fuzzy-work-tree
 zle -N fuzzy-history
+zle -N replace-command
 zle -N ls-now
 zle -N unpipe
 bindkey '^^' cd-up
@@ -140,5 +142,6 @@ bindkey '^g^r' git-fuzzy-branch
 bindkey '^g^g' git-fuzzy-log
 bindkey '^g^w' git-fuzzy-work-tree
 bindkey '^r' fuzzy-history
+bindkey '^e^r' replace-command
 bindkey '^e^l' ls-now
 bindkey '^|' unpipe
