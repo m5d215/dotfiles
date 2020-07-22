@@ -115,6 +115,7 @@ if [[ "$OSTYPE" =~ ^darwin ]]; then
 fi
 
 # key binding
+autoload -Uz cd-home
 autoload -Uz cd-up
 autoload -Uz docker-fuzzy-container
 autoload -Uz docker-fuzzy-image
@@ -125,6 +126,7 @@ autoload -Uz fuzzy-history
 autoload -Uz replace-command
 autoload -Uz ls-now
 autoload -Uz unpipe
+zle -N cd-home
 zle -N cd-up
 zle -N docker-fuzzy-container
 zle -N docker-fuzzy-image
@@ -135,6 +137,7 @@ zle -N fuzzy-history
 zle -N replace-command
 zle -N ls-now
 zle -N unpipe
+bindkey '≠' cd-home
 bindkey '^^' cd-up
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image

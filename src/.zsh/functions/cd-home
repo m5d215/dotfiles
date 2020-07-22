@@ -1,0 +1,13 @@
+cd ~
+
+if command -v precmd >/dev/null 2>&1; then
+    precmd
+fi
+
+local precmd
+for precmd in "${precmd_functions[@]}"
+do
+    $precmd
+done
+
+zle reset-prompt
