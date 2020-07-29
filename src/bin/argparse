@@ -4,6 +4,7 @@ set -e
 set -u
 
 ARGPARSE_AGGRESSIVE_EAT=${ARGPARSE_AGGRESSIVE_EAT:-0}
+ARGPARSE_EXPOSE_HELP=${ARGPARSE_EXPOSE_HELP:-0}
 
 # Compile $ARGPARSE_OPTS to internal representation.
 function argparse_compile()
@@ -280,132 +281,140 @@ unset argparse_ensure_value
 unset argparse_parse
 
 # Display help.
-if [ "${opt_help:-}" == '1' ]; then
-    function argparse_build_help_option()
-    {
-        local _keyword
-        local _nargs
-        local _required
-        local _rest
-        local _description
-        local _comma
+function argparse_build_help_option()
+{
+    local _keyword
+    local _nargs
+    local _required
+    local _rest
+    local _description
+    local _comma
 
-        _nargs=$1
-        _required=$2
-        _rest=$3
-        _description=$4
-        shift 4
+    _nargs=$1
+    _required=$2
+    _rest=$3
+    _description=$4
+    shift 4
 
-        _comma=0
+    _comma=0
 
-        echo -n $'\t'
+    echo -n $'\t'
 
-        while (($# != 0))
-        do
-            if [ "$1" == '-_' ]; then
-                shift
-                continue
-            fi
-            if ((_comma == 0)); then
-                _comma=1
-            else
-                echo -n ', '
-            fi
-            echo -en "\033[2m$1\033[0m"
+    while (($# != 0))
+    do
+        if [ "$1" == '-_' ]; then
             shift
-        done
+            continue
+        fi
+        if ((_comma == 0)); then
+            _comma=1
+        else
+            echo -n ', '
+        fi
+        echo -en "\033[2m$1\033[0m"
+        shift
+    done
 
-        case "$_nargs" in
-        '?')
-            echo
-            ;;
-        ':')
-            echo -e " \033[4mvalue\033[0m"
-            ;;
-        '*')
-            echo -e " [\033[4mvalue\033[0m]..."
-            ;;
-        '+')
-            echo -e " \033[4mvalue\033[0m [\033[4mvalue\033[0m]..."
-            ;;
-        esac
-
-        case "$_required$_rest" in
-        '00')
-            echo -e "\t\t$_description"
-            ;;
-        '01')
-            echo -e "\t\t$_description (\033[36mrest\033[0m)"
-            ;;
-        '10')
-            echo -e "\t\t$_description (\033[32mrequired\033[0m)"
-            ;;
-        '11')
-            echo -e "\t\t$_description (\033[32mrequired\033[0m, \033[36mrest\033[0m)"
-            ;;
-        esac
-
+    case "$_nargs" in
+    '?')
         echo
-    }
+        ;;
+    ':')
+        echo -e " \033[4mvalue\033[0m"
+        ;;
+    '*')
+        echo -e " [\033[4mvalue\033[0m]..."
+        ;;
+    '+')
+        echo -e " \033[4mvalue\033[0m [\033[4mvalue\033[0m]..."
+        ;;
+    esac
 
-    function argparse_help()
-    {
-        local _i
-        local _keyword
-        local _names
-        local _nargs
-        local _required
-        local _description
-        local _rest
+    case "$_required$_rest" in
+    '00')
+        echo -e "\t\t$_description"
+        ;;
+    '01')
+        echo -e "\t\t$_description (\033[36mrest\033[0m)"
+        ;;
+    '10')
+        echo -e "\t\t$_description (\033[32mrequired\033[0m)"
+        ;;
+    '11')
+        echo -e "\t\t$_description (\033[32mrequired\033[0m, \033[36mrest\033[0m)"
+        ;;
+    esac
 
-        _keyword=''
-        _names=()
-        _nargs=' '
-        _required=0
-        _description=''
-        _rest=0
+    echo
+}
 
-        echo -e "\033[2mNAME:\033[0m"
-        echo -e "\t$(basename "$0") - ${ARGPARSE_DESCRIPTION:-<description is not provided>}"
-        echo
+function argparse_help()
+{
+    local _i
+    local _keyword
+    local _names
+    local _nargs
+    local _required
+    local _description
+    local _rest
 
-        echo -e "\033[2mOPTIONS:\033[0m"
+    _keyword=''
+    _names=()
+    _nargs=' '
+    _required=0
+    _description=''
+    _rest=0
 
-        for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
-        do
-            if [ "${argparse_ir[$_i]}" != "$_keyword" ] && ((${#_names[@]} != 0)); then
-                argparse_build_help_option "$_nargs" "$_required" "$_rest" "$_description" "${_names[@]}"
-                _names=()
-                _rest=0
-            fi
-            _keyword=${argparse_ir[$_i]}
-            if [ "${argparse_ir[((_i + 1))]}" == '-_' ]; then
-                _rest=1
-            else
-                _names+=("${argparse_ir[((_i + 1))]}")
-            fi
-            _nargs=${argparse_ir[((_i + 2))]}
-            _required=${argparse_ir[((_i + 3))]}
-            _description=${argparse_ir[((_i + 4))]}
-        done
+    echo -e "\033[2mNAME:\033[0m"
+    echo -e "\t$(basename "$0") - ${ARGPARSE_DESCRIPTION:-<description is not provided>}"
+    echo
 
-        if ((${#_names[@]} != 0)); then
+    echo -e "\033[2mOPTIONS:\033[0m"
+
+    for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
+    do
+        if [ "${argparse_ir[$_i]}" != "$_keyword" ] && ((${#_names[@]} != 0)); then
             argparse_build_help_option "$_nargs" "$_required" "$_rest" "$_description" "${_names[@]}"
+            _names=()
+            _rest=0
         fi
-
-        if [ -n "${ARGPARSE_EXAMPLES:-}" ]; then
-            echo -e "\033[2mEXAMPLES:\033[0m"
-            for ((_i = 0; _i < ${#ARGPARSE_EXAMPLES[@]}; ++_i))
-            do
-                echo -e "\t${ARGPARSE_EXAMPLES[$_i]}"
-            done
+        _keyword=${argparse_ir[$_i]}
+        if [ "${argparse_ir[((_i + 1))]}" == '-_' ]; then
+            _rest=1
+        else
+            _names+=("${argparse_ir[((_i + 1))]}")
         fi
-    }
+        _nargs=${argparse_ir[((_i + 2))]}
+        _required=${argparse_ir[((_i + 3))]}
+        _description=${argparse_ir[((_i + 4))]}
+    done
 
+    if ((${#_names[@]} != 0)); then
+        argparse_build_help_option "$_nargs" "$_required" "$_rest" "$_description" "${_names[@]}"
+    fi
+
+    if [ -n "${ARGPARSE_EXAMPLES:-}" ]; then
+        echo -e "\033[2mEXAMPLES:\033[0m"
+        for ((_i = 0; _i < ${#ARGPARSE_EXAMPLES[@]}; ++_i))
+        do
+            echo -e "\t${ARGPARSE_EXAMPLES[$_i]}"
+        done
+    fi
+}
+
+if [ "${opt_help:-}" == '1' ]; then
     argparse_help
     unset argparse_help
     unset argparse_build_help_option
     exit
+fi
+
+if ((ARGPARSE_EXPOSE_HELP == 0)); then
+    unset argparse_help
+    unset argparse_build_help_option
+    unset ARGPARSE_DESCRIPTION
+    unset ARGPARSE_EXAMPLES
+    unset argparse_ir
 fi
 
 # Verify that required arguments are set.
@@ -414,10 +423,7 @@ if ((${#argparse_requires[@]} != 0)); then
     exit 1
 fi
 
-unset ARGPARSE_DESCRIPTION
 unset ARGPARSE_OPTS
-unset ARGPARSE_EXAMPLES
 unset ARGPARSE_AGGRESSIVE_EAT
-unset argparse_ir
 unset argparse_rest
 unset argparse_requires
