@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 . ~/.environment
 
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'

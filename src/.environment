@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # general
 export LANG=en_US.UTF-8
 export LESS='-R'

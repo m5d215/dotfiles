@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Options
 setopt extended_history
 setopt hist_ignore_all_dups

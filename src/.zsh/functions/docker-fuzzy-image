@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 local _accept=1
 local _query=
 local _key

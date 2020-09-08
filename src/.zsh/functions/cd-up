@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 cd ..
 
 if command -v precmd >/dev/null 2>&1; then
