@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 
+function prefer-abbrev-alias() {
+    if command -v abbrev-alias >/dev/null 2>&1; then
+        abbrev-alias "$@"
+    else
+        alias "$@"
+    fi
+}
+
 # cd
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ~='cd ~'
+prefer-abbrev-alias ..=' cd ..'
+prefer-abbrev-alias ...=' cd ../..'
+prefer-abbrev-alias ....=' cd ../../..'
+prefer-abbrev-alias .....=' cd ../../../..'
+prefer-abbrev-alias ~=' cd ~'
+
+# docker
+if command -v docker-compose >/dev/null 2>&1; then
+    prefer-abbrev-alias dc='docker-compose'
+fi
 
 # git
-alias a='git add'
-alias d='git diff'
-alias s='git status --short --branch'
-alias g='git graph'
+prefer-abbrev-alias g='git'
+prefer-abbrev-alias a='git add'
+prefer-abbrev-alias d='git diff'
+prefer-abbrev-alias s=' git status --short --branch'
+prefer-abbrev-alias gg=' git graph'
+prefer-abbrev-alias gm='git merge --ff-only'
 
 # grep
 alias grep='grep --color=auto'
@@ -29,16 +44,14 @@ linux*|msys)
     ;;
 esac
 
-alias l='ls -lF'
-alias ll='ls -alF'
-
 if command -v exa >/dev/null 2>&1; then
     alias exa='exa --classify --color=always --group --header --git --time-style long-iso'
 
-    unalias l
-    unalias ll
-    alias l='exa --long'
-    alias ll='exa --long --all'
+    prefer-abbrev-alias l=' exa --long'
+    prefer-abbrev-alias ll=' exa --long --all'
+else
+    prefer-abbrev-alias l=' ls -lF'
+    prefer-abbrev-alias ll=' ls -alF'
 fi
 
 # ssh
@@ -55,4 +68,31 @@ if command -v open >/dev/null 2>&1; then
     {
         open -a 'Google Chrome' "https://eow.alc.co.jp/search?q=$*"
     }
+fi
+
+# global abbrev-alias
+if command -v abbrev-alias >/dev/null 2>&1; then
+    abbrev-alias -g G='| grep --color=yes -Hn'
+    abbrev-alias -g L='| less'
+
+    abbrev-alias -g X='| xargs'
+    abbrev-alias -g X0='| xargs -0'
+    abbrev-alias -g XG='| xargs grep --color=yes -Hn'
+    abbrev-alias -g X0G='| xargs -0 grep --color=yes -Hn'
+
+    abbrev-alias -g FF='find . -type f -name'
+    abbrev-alias -g FD='find . -type d -name'
+    abbrev-alias -g FG='find . -type d -name .git -prune -o -print'
+    abbrev-alias -g FGN='find . -type d \( -name .git -o -name node_modules \) -prune -o -print'
+
+    abbrev-alias -g F='| fzf'
+    abbrev-alias -g FP="| fzf --preview='bat --color=always --style=numbers {}' --preview-window=down"
+
+    abbrev-alias -g J='| jq .'
+
+    if [[ "$OSTYPE" =~ ^darwin ]]; then
+        abbrev-alias -g C='| pbcopy'
+        abbrev-alias -g CC='| tee >(pbcopy)'
+        abbrev-alias -g P='pbpaste'
+    fi
 fi

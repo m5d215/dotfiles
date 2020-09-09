@@ -91,31 +91,6 @@ if command -v pmy >/dev/null; then
     eval "$(pmy init)"
 fi
 
-# abbrev-alias
-abbrev-alias -g G='| grep --color=yes -Hn'
-abbrev-alias -g L='| less'
-
-abbrev-alias -g X='| xargs'
-abbrev-alias -g X0='| xargs -0'
-abbrev-alias -g XG='| xargs grep --color=yes -Hn'
-abbrev-alias -g X0G='| xargs -0 grep --color=yes -Hn'
-
-abbrev-alias -g FF='find . -type f -name'
-abbrev-alias -g FD='find . -type d -name'
-abbrev-alias -g FG='find . -type d -name .git -prune -o -print'
-abbrev-alias -g FGN='find . -type d \( -name .git -o -name node_modules \) -prune -o -print'
-
-abbrev-alias -g F='| fzf'
-abbrev-alias -g FP="| fzf --preview='bat --color=always --style=numbers {}' --preview-window=down"
-
-abbrev-alias -g J='| jq .'
-
-if [[ "$OSTYPE" =~ ^darwin ]]; then
-    abbrev-alias -g C='| pbcopy'
-    abbrev-alias -g CC='| tee >(pbcopy)'
-    abbrev-alias -g P='pbpaste'
-fi
-
 # key binding
 autoload -Uz cd-home
 autoload -Uz cd-up
