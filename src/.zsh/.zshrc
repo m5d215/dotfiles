@@ -97,6 +97,7 @@ autoload -Uz cd-up
 autoload -Uz copy-command
 autoload -Uz docker-fuzzy-container
 autoload -Uz docker-fuzzy-image
+autoload -Uz explorer
 autoload -Uz git-fuzzy-branch
 autoload -Uz git-fuzzy-log
 autoload -Uz git-fuzzy-work-tree
@@ -109,6 +110,7 @@ zle -N cd-up
 zle -N copy-command
 zle -N docker-fuzzy-container
 zle -N docker-fuzzy-image
+zle -N explorer
 zle -N git-fuzzy-branch
 zle -N git-fuzzy-log
 zle -N git-fuzzy-work-tree
@@ -121,6 +123,7 @@ bindkey '^^' cd-up
 bindkey '^y' copy-command
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image
+bindkey '^e^e' explorer
 bindkey '^g^r' git-fuzzy-branch
 bindkey '^g^g' git-fuzzy-log
 bindkey '^g^w' git-fuzzy-work-tree
