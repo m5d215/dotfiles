@@ -16,8 +16,7 @@ HISTFILE=$ZDOTDIR/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
-function zshaddhistory()
-{
+function zshaddhistory {
     (( $#1 > 3 ))
 }
 
@@ -43,11 +42,11 @@ compinit -C
 if command -v powerline-go >/dev/null; then
     zmodload zsh/datetime
 
-    function preexec() {
+    function preexec {
         __TIMER=$EPOCHREALTIME
     }
 
-    function powerline_precmd() {
+    function powerline_precmd {
         local __ERRCODE=$?
         local __DURATION=0
 
@@ -70,7 +69,7 @@ if command -v powerline-go >/dev/null; then
         )"
     }
 
-    function install_powerline_precmd() {
+    function install_powerline_precmd {
         for s in "${precmd_functions[@]}"
         do
             if [ "$s" = "powerline_precmd" ]; then

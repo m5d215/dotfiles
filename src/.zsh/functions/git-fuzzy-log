@@ -3,8 +3,7 @@
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
 
-function pretty_commit_message_prefix()
-{
+function pretty_commit_message_prefix {
     sed -E $'
         s/ feat:/ ✨/g;
         s/ fix:/ 🐛/g;

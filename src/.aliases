@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function prefer-abbrev-alias() {
+function prefer-abbrev-alias {
     if command -v abbrev-alias >/dev/null 2>&1; then
         abbrev-alias "$@"
     else
@@ -59,13 +59,11 @@ alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul
 
 # google
 if command -v open >/dev/null 2>&1; then
-    function google()
-    {
+    function google {
         open -a 'Google Chrome' "https://google.co.jp/search?q=$*"
     }
 
-    function eijiro()
-    {
+    function eijiro {
         open -a 'Google Chrome' "https://eow.alc.co.jp/search?q=$*"
     }
 fi

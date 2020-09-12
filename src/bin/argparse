@@ -7,8 +7,7 @@ ARGPARSE_AGGRESSIVE_EAT=${ARGPARSE_AGGRESSIVE_EAT:-0}
 ARGPARSE_EXPOSE_HELP=${ARGPARSE_EXPOSE_HELP:-0}
 
 # Compile $ARGPARSE_OPTS to internal representation.
-function argparse_compile()
-{
+function argparse_compile {
     local _opts
     local _description
     local _required
@@ -69,8 +68,7 @@ argparse_compile
 unset argparse_compile
 
 # Declare the switch option variables.
-function argparse_declare_switch()
-{
+function argparse_declare_switch {
     local _i
 
     for ((_i = 0; _i < ${#argparse_ir[@]}; _i += 5))
@@ -91,8 +89,7 @@ argparse_state_nargs=''
 argparse_state_completed=''
 argparse_state_eat=0
 
-function argparse_escape()
-{
+function argparse_escape {
     local _text
     local _single_quotation_mark
     local _double_quotation_mark
@@ -106,8 +103,7 @@ function argparse_escape()
 }
 
 # Set the parser state from option name.
-function argparse_set_state()
-{
+function argparse_set_state {
     local _name
     local _i
 
@@ -169,8 +165,7 @@ function argparse_set_state()
 }
 
 # Set the parser state to the rest option.
-function argparse_next_rest()
-{
+function argparse_next_rest {
     while ((ARGPARSE_AGGRESSIVE_EAT == 0)) && (($# != 0))
     do
         if [[ "$1" =~ ^- ]]; then
@@ -188,8 +183,7 @@ function argparse_next_rest()
 }
 
 # Verify whether the option satisfies the value.
-function argparse_ensure_value()
-{
+function argparse_ensure_value {
     case "${argparse_state_nargs:- }" in
     ' ')
         ;;
@@ -213,8 +207,7 @@ function argparse_ensure_value()
 }
 
 # Parse command line arguments.
-function argparse_parse()
-{
+function argparse_parse {
     local _i
 
     while (($# != 0))
@@ -281,8 +274,7 @@ unset argparse_ensure_value
 unset argparse_parse
 
 # Display help.
-function argparse_build_help_option()
-{
+function argparse_build_help_option {
     local _keyword
     local _nargs
     local _required
@@ -348,8 +340,7 @@ function argparse_build_help_option()
     echo
 }
 
-function argparse_help()
-{
+function argparse_help {
     local _i
     local _keyword
     local _names

@@ -17,8 +17,7 @@ fi
 
 # powerline-go
 if command -v powerline-go >/dev/null; then
-    function _update_prompt()
-    {
+    function _update_prompt {
         eval "$(powerline-go \
             -error $? \
             -eval \

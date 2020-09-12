@@ -13,8 +13,7 @@ mkdir -p ~/.config
 mkdir -p ~/.pmy
 mkdir -p ~/.zsh
 
-function create_link()
-{
+function create_link {
     local _name
     _name=$1
 
