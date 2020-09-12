@@ -28,6 +28,7 @@ function create_link()
 create_link .pmy/rules
 create_link .pmy/snippets
 create_link .zsh/functions
+create_link .zsh/.zshenv
 create_link .zsh/.zshrc
 create_link bin
 create_link .aliases
