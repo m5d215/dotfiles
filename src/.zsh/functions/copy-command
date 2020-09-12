@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#shellcheck shell=bash
+
+set -e
+set -u
+
+printf %s "$BUFFER" | pbcopy
+BUFFER=

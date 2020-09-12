@@ -94,6 +94,7 @@ fi
 # key binding
 autoload -Uz cd-home
 autoload -Uz cd-up
+autoload -Uz copy-command
 autoload -Uz docker-fuzzy-container
 autoload -Uz docker-fuzzy-image
 autoload -Uz git-fuzzy-branch
@@ -105,6 +106,7 @@ autoload -Uz ls-now
 autoload -Uz unpipe
 zle -N cd-home
 zle -N cd-up
+zle -N copy-command
 zle -N docker-fuzzy-container
 zle -N docker-fuzzy-image
 zle -N git-fuzzy-branch
@@ -116,6 +118,7 @@ zle -N ls-now
 zle -N unpipe
 bindkey '^[^' cd-home
 bindkey '^^' cd-up
+bindkey '^y' copy-command
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image
 bindkey '^g^r' git-fuzzy-branch
