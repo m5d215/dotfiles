@@ -115,7 +115,7 @@ zle -N fuzzy-history
 zle -N replace-command
 zle -N ls-now
 zle -N unpipe
-bindkey '≠' cd-home
+bindkey '^[^' cd-home
 bindkey '^^' cd-up
 bindkey '^e^v' docker-fuzzy-container
 bindkey '^e^i' docker-fuzzy-image
