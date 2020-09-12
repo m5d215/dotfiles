@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+#shellcheck shell=bash
 
 # Options
 setopt extended_history
