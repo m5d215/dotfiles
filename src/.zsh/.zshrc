@@ -92,32 +92,20 @@ if command -v pmy >/dev/null; then
 fi
 
 # key binding
-autoload -Uz cd-home
-autoload -Uz cd-up
-autoload -Uz copy-command
-autoload -Uz docker-fuzzy-container
-autoload -Uz docker-fuzzy-image
-autoload -Uz explorer
-autoload -Uz git-fuzzy-branch
-autoload -Uz git-fuzzy-log
-autoload -Uz git-fuzzy-work-tree
-autoload -Uz fuzzy-history
-autoload -Uz replace-command
-autoload -Uz ls-now
-autoload -Uz unpipe
-zle -N cd-home
-zle -N cd-up
-zle -N copy-command
-zle -N docker-fuzzy-container
-zle -N docker-fuzzy-image
-zle -N explorer
-zle -N git-fuzzy-branch
-zle -N git-fuzzy-log
-zle -N git-fuzzy-work-tree
-zle -N fuzzy-history
-zle -N replace-command
-zle -N ls-now
-zle -N unpipe
+function __discover_autoload {
+    local _name
+
+    while read -r _name
+    do
+        _name=${_name##*/}
+        autoload -Uz "$_name"
+        zle -N "$_name"
+    done < <(find "$ZDOTDIR/functions/" -type f -print)
+}
+
+__discover_autoload
+unset __discover_autoload
+
 bindkey '^[^' cd-home
 bindkey '^^' cd-up
 bindkey '^y' copy-command
