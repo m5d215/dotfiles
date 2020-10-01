@@ -15,6 +15,7 @@ function pretty_commit_message_prefix {
         s/ docs:/ 📚/g;
         s/ chore:/ 🔧/g;
         s/ Merge branch /  \ue0a0 Merge branch /g;
+        s/ Merge remote-tracking branch /  \ue0a0 Merge remote-tracking branch /g;
         s/ Merge pull request /  \ue0a0 Merge pull request /g;
     '
 }
