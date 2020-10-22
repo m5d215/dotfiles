@@ -1,8 +1,8 @@
 [alias]
     amend = commit --amend -C HEAD
-    graph = log --graph --color --all --date-order --decorate --oneline
-    details = log --graph --color --all --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    overview = log --graph --color --all --date-order --decorate --stat --find-renames
+    graph = log --graph --color --all --date=iso --date-order --decorate --oneline
+    details = log --graph --color --all --date=iso --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    overview = log --graph --color --all --date=iso --date-order --decorate --stat --find-renames
 [color]
     ui = auto
 [core]
