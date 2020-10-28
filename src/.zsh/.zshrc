@@ -27,7 +27,7 @@ autoload -Uz _zinit
 
 zinit load hlissner/zsh-autopair
 zinit ice from"gh-r" as"command"
-zinit load junegunn/fzf-bin
+zinit load junegunn/fzf
 zinit ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
 zinit load justjanne/powerline-go
 zinit load momo-lab/zsh-abbrev-alias
