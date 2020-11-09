@@ -62,12 +62,12 @@ function subcommand_list {
         sed -e 's/\/\.git$//'
 }
 
-if [ ! -z "${opt_git:-}" ]; then
+if [ -n "${opt_git:-}" ]; then
     subcommand_git
     exit $?
 fi
 
-if [ ! -z "${opt_exec:-}" ]; then
+if [ -n "${opt_exec:-}" ]; then
     subcommand_exec
     exit $?
 fi
