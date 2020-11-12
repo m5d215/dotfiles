@@ -20,6 +20,11 @@ function zshaddhistory {
     (( $#1 > 3 ))
 }
 
+# swift
+if command -v swift >/dev/null 2>&1 && [ ! -f /usr/local/share/zsh/site-functions/_swift ]; then
+    swift package completion-tool generate-zsh-script >/usr/local/share/zsh/site-functions/_swift
+fi
+
 # zinit
 . "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
