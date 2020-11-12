@@ -3,6 +3,12 @@
 set -e
 set -u
 
+: docker container run --rm -it -v "$PWD:$PWD":ro -w "$PWD" alpine:3 sh -c '
+    apk --no-cache add bash curl git vim
+    ./install.sh
+    ls -Al ~
+'
+
 ROOT=${ROOT:-~/src/github.com/m5d215/dotfiles}
 
 if [ ! -d "$ROOT" ]; then
@@ -10,7 +16,6 @@ if [ ! -d "$ROOT" ]; then
 fi
 
 mkdir -p ~/.config
-mkdir -p ~/.pmy
 mkdir -p ~/.zsh
 
 function create_link {
@@ -24,8 +29,7 @@ function create_link {
     ln -fsv "$ROOT/src/$_name" "$HOME/$_name"
 }
 
-create_link .pmy/rules
-create_link .pmy/snippets
+create_link .pmy
 create_link .zsh/functions
 create_link .zsh/.zshenv
 create_link .zsh/.zshrc
