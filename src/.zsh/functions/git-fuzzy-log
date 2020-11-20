@@ -25,28 +25,42 @@ local _key
 local _item
 local _commit
 
-while {
-    IFS= read -r _query
-    IFS= read -r _key
-    IFS= read -r _item
-} < <(git log --graph --color --all --date-order --decorate --oneline | pretty_commit_message_prefix | fzf \
-    --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
-    --preview='
-            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
-            [ ! -z "$_commit" ] && git show --color=always "$_commit" | head -n "$(( LINES - 2 ))"
-        ' \
-    --bind='ctrl-f:execute(
-            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
-            [ ! -z "$_commit" ] && git show --color=always --name-status "$_commit" >/dev/tty
-        )' \
-    --bind='enter:execute(
-            local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
-            [ ! -z "$_commit" ] && git show --color=always "$_commit" >/dev/tty
-        )' \
-    --query=$_query \
-    --print-query \
-    --expect='ctrl-i,ctrl-l'
-)
+function interaction {
+    local _json
+    _json=$(
+        git log --graph --color --all --date-order --decorate --oneline | pretty_commit_message_prefix \
+        | fzf \
+            --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
+            --preview='
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+                    [ ! -z "$_commit" ] && git show --color=always "$_commit" | head -n "$(( LINES - 2 ))"
+                ' \
+            --bind='ctrl-f:execute(
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+                    [ ! -z "$_commit" ] && git show --color=always --name-status "$_commit" >/dev/tty
+                )' \
+            --bind='enter:execute(
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+                    [ ! -z "$_commit" ] && git show --color=always "$_commit" >/dev/tty
+                )' \
+            --query="$_query" \
+            --print-query \
+            --expect='ctrl-i,ctrl-l' \
+        | jq -R . | jq -scr .
+    )
+
+    local _length
+    {
+        IFS= read -r _length
+        IFS= read -r _query
+        IFS= read -r _key
+        IFS= read -r _item
+    } < <(jq -cr 'length, .[]' <<<"$_json")
+
+    (( _length == 3 ))
+}
+
+while interaction
 do
     _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<"$_item")
 

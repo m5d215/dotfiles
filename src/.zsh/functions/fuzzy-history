@@ -10,15 +10,30 @@ if (( $#BUFFER != 0 )); then
     _query="^$BUFFER"
 fi
 
-while {
-    IFS= read -r _query
-    IFS= read -r _key
-    IFS= read -r _command
-} < <(history -nr 1 | fzf \
-    --header='enter: execute | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
-    --query="$_query" \
-    --print-query \
-    --expect='enter,ctrl-i,ctrl-l,ctrl-x')
+function interaction {
+    local _json
+    _json=$(
+        history -nr 1 \
+        | fzf \
+            --header='enter: execute | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+            --query="$_query" \
+            --print-query \
+            --expect='enter,ctrl-i,ctrl-l,ctrl-x' \
+        | jq -R . | jq -scr .
+    )
+
+    local _length
+    {
+        IFS= read -r _length
+        IFS= read -r _query
+        IFS= read -r _key
+        IFS= read -r _command
+    } < <(jq -cr 'length, .[]' <<<"$_json")
+
+    (( _length == 3 ))
+}
+
+while interaction
 do
     case "$_key" in
         enter)

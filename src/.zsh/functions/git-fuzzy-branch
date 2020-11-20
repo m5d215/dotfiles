@@ -9,17 +9,31 @@ local _key
 local _branch
 local _location
 
-while {
-    IFS= read -r _query
-    IFS= read -r _key
-    IFS= read -r _branch
-} < <(git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' | fzf \
-    --height=$(( $(git branch --all | grep -cvE '(^|/)HEAD') + 3 )) \
-    --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
-    --query=$_query \
-    --print-query \
-    --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-i,ctrl-l,ctrl-x'
-)
+function interaction {
+    local _json
+    _json=$(
+        git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' \
+        | fzf \
+            --height=$(( $(git branch --all | grep -cvE '(^|/)HEAD') + 3 )) \
+            --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+            --query="$_query" \
+            --print-query \
+            --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-i,ctrl-l,ctrl-x' \
+        | jq -R . | jq -scr .
+    )
+
+    local _length
+    {
+        IFS= read -r _length
+        IFS= read -r _query
+        IFS= read -r _key
+        IFS= read -r _branch
+    } < <(jq -cr 'length, .[]' <<<"$_json")
+
+    (( _length == 3 ))
+}
+
+while interaction
 do
     _branch=${_branch% -> *}
     _branch=${_branch#??}
