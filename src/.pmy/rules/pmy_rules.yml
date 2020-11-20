@@ -54,11 +54,18 @@
 - description: Suggest ssh hosts
   regexp-left: 'ssh.* $'
   cmd-groups:
-    - stmt: grep -oE '^Host [^*]+$' ~/.ssh/config | cut -c 6-
+    - stmt: |
+        while read -r
+        do
+          if [[ "$REPLY" =~ ^Include  ]]; then
+            bash -c "cat ${REPLY#Include }"
+          else
+            echo "$REPLY"
+          fi
+        done <~/.ssh/config | grep -oE '^Host [^*]+$' | cut -c 6-
       after: awk '{print $0}'
   fuzzy-finder-cmd:
     fzf
-      --height "$({ echo && echo && grep -oE '^Host [^*]+$' ~/.ssh/config } | wc -l | awk '{print $1}')"
       --select-1
       --exit-0
   buffer-left: '[]'
