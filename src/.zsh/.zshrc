@@ -18,6 +18,7 @@ SAVEHIST=10000
 
 function zshaddhistory {
     (( $#1 > 3 ))
+    ! [[ "$1" =~ ^\./ ]]
 }
 
 # swift
