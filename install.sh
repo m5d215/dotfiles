@@ -57,5 +57,7 @@ fi
 # Install vim-plug
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
     curl -fsSL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o ~/.vim/autoload/plug.vim --create-dirs
-    vim -u <(sed -e '/colorscheme/d' ~/.vimrc) +PlugInstall +qall </dev/null >/dev/null 2>&1
+    sed -e '/colorscheme/d' ~/.vimrc >/tmp/.vimrc_deleteme
+    vim -u /tmp/.vimrc_deleteme +PlugInstall +qall </dev/null >/dev/null 2>&1
+    rm /tmp/.vimrc_deleteme
 fi
