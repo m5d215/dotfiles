@@ -3,7 +3,7 @@
 
 . ~/.environment
 
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
 export FZF_DEFAULT_OPTS='--no-sort --no-mouse --reverse --ansi'
 export FPATH=$ZDOTDIR/functions:$FPATH
 export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)

@@ -55,7 +55,7 @@ else
 fi
 
 # ssh
-alias ssh-silent='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'
+prefer-abbrev-alias ssh-silent=' ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR'
 
 # google
 if command -v open >/dev/null 2>&1; then
@@ -72,6 +72,8 @@ fi
 if command -v abbrev-alias >/dev/null 2>&1; then
     abbrev-alias -g G='| grep --color=yes -Hn'
     abbrev-alias -g L='| less'
+    abbrev-alias -g H='| head'
+    abbrev-alias -g T='| tail'
 
     abbrev-alias -g X='| xargs'
     abbrev-alias -g X0='| xargs -0'
@@ -87,6 +89,8 @@ if command -v abbrev-alias >/dev/null 2>&1; then
     abbrev-alias -g FP="| fzf --preview='bat --color=always --style=numbers {}' --preview-window=down"
 
     abbrev-alias -g J='| jq .'
+
+    abbrev-alias -g B='| bat --language=diff'
 
     if [[ "$OSTYPE" =~ ^darwin ]]; then
         abbrev-alias -g C='| pbcopy'
