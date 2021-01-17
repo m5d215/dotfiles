@@ -19,14 +19,18 @@ mkdir -p ~/.config
 mkdir -p ~/.zsh
 
 function create_link {
-    local _name
-    _name=$1
+    local _src
+    local _dest
+    _src=$1
+    _dest=${2:-$1}
 
-    if [ -e "$HOME/$_name" ]; then
-        mv "$HOME/$_name" "$HOME/$_name.bak"
+    if [ -e "$HOME/$_dest" ] && [ ! -s "$HOME/$_dest" ]; then
+        mkdir -p "$HOME/.dotfiles-backup"
+        mv "$HOME/$_dest" "$HOME/.dotfiles-backup/$_dest"
     fi
 
-    ln -fsv "$ROOT/src/$_name" "$HOME/$_name"
+    rm "$HOME/$_dest"
+    ln -fsv "$ROOT/src/$_src" "$HOME/$_dest"
 }
 
 create_link .pmy
@@ -37,7 +41,7 @@ create_link bin
 create_link .aliases
 create_link .bash_profile
 create_link .bashrc
-create_link .editorconfig2
+create_link .editorconfig2 .editorconfig
 create_link .environment
 create_link .gitconfig
 create_link .tmux.conf
