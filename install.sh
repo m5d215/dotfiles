@@ -29,7 +29,7 @@ function create_link {
         mv "$HOME/$_dest" "$HOME/.dotfiles-backup/$_dest"
     fi
 
-    rm "$HOME/$_dest"
+    rm -f "$HOME/$_dest"
     ln -fsv "$ROOT/src/$_src" "$HOME/$_dest"
 }
 
