@@ -41,7 +41,7 @@ create_link bin
 create_link .aliases
 create_link .bash_profile
 create_link .bashrc
-create_link .editorconfig2 .editorconfig
+create_link .editorconfig4 .editorconfig
 create_link .environment
 create_link .gitconfig
 create_link .tmux.conf
