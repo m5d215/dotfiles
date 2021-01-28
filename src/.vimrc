@@ -54,6 +54,7 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set expandtab
+set nowrap
 
 " Powerline
 let g:airline_powerline_fonts = 1
