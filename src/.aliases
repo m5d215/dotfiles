@@ -45,7 +45,7 @@ linux*|msys)
 esac
 
 if command -v exa >/dev/null 2>&1; then
-    alias exa='exa --classify --color=always --group --header --git --time-style long-iso'
+    alias exa='exa --classify --color=always --group-directories-first --group --header --git --time-style long-iso'
 
     prefer-abbrev-alias l=' exa --long'
     prefer-abbrev-alias ll=' exa --long --all'
