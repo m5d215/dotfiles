@@ -19,6 +19,7 @@ function interaction {
                     local _path={}
                     git diff --color=always -- "${_path#???}" | head -n "$LINES"
                 ' \
+            --preview-window=border-left \
             --bind='enter:execute(
                     local _path={}
                     git diff --color=always -- "${_path#???}" >/dev/tty

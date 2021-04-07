@@ -35,6 +35,7 @@ function interaction {
                     local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
                     [ ! -z "$_commit" ] && git show --color=always "$_commit" | head -n "$(( LINES - 2 ))"
                 ' \
+            --preview-window=border-left \
             --bind='ctrl-f:execute(
                     local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
                     [ ! -z "$_commit" ] && git show --color=always --name-status "$_commit" >/dev/tty
