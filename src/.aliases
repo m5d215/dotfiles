@@ -16,8 +16,8 @@ prefer-abbrev-alias .....=' cd ../../../..'
 prefer-abbrev-alias ~=' cd ~'
 
 # docker
-if command -v docker-compose >/dev/null 2>&1; then
-    prefer-abbrev-alias dc='docker-compose'
+if command -v docker >/dev/null 2>&1; then
+    prefer-abbrev-alias dc='docker compose'
 fi
 
 # git
