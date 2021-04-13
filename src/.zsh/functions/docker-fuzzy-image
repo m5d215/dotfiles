@@ -20,7 +20,7 @@ function interaction {
             --header-lines=1 \
             --query="$_query" \
             --print-query \
-            --bind='enter:execute(
+            --bind=$'enter:execute(
                     local _id=$(cut -c -12 <<<{})
                     docker image inspect "$_id" | jq -C . | less >/dev/tty
                 )' \

@@ -31,17 +31,17 @@ function interaction {
         git log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset' | pretty_commit_message_prefix \
         | fzf \
             --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
-            --preview='
-                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+            --preview=$'
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{})
                     [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller "$_commit" | head -n "$LINES"
                 ' \
             --preview-window=border-left \
-            --bind='ctrl-f:execute(
-                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+            --bind=$'ctrl-f:execute(
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{})
                     [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller --name-status "$_commit" >/dev/tty
                 )' \
-            --bind='enter:execute(
-                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\1/" <<<{})
+            --bind=$'enter:execute(
+                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{})
                     [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller "$_commit" >/dev/tty
                 )' \
             --query="$_query" \
