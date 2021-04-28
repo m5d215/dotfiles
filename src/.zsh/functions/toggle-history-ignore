@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#shellcheck shell=bash
+
+if [ "${BUFFER:0:1}" = ' ' ]; then
+    BUFFER=${BUFFER:1}
+    CURSOR=$(( CURSOR - 1 ))
+else
+    BUFFER=" $BUFFER"
+    CURSOR=$(( CURSOR + 1 ))
+fi

@@ -123,3 +123,4 @@ bindkey '^r' fuzzy-history
 bindkey '^e^r' replace-command
 bindkey '^e^l' ls-now
 bindkey '^|' unpipe
+bindkey '^e^i' toggle-history-ignore
