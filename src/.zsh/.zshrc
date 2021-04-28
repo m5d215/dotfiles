@@ -116,8 +116,6 @@ unset __discover_autoload
 bindkey '^[^' cd-home
 bindkey '^^' cd-up
 bindkey '^y' copy-command
-bindkey '^e^v' docker-fuzzy-container
-bindkey '^e^i' docker-fuzzy-image
 bindkey '^g^r' git-fuzzy-branch
 bindkey '^g^g' git-fuzzy-log
 bindkey '^g^w' git-fuzzy-work-tree
