@@ -35,7 +35,6 @@ zinit load momo-lab/zsh-abbrev-alias
 zinit load zsh-users/zsh-autosuggestions
 zinit load zsh-users/zsh-completions
 zinit load zsh-users/zsh-syntax-highlighting
-zinit load arzzen/calc.plugin.zsh
 
 autoload -U compinit
 compinit -C
