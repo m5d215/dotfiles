@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -Ceuo pipefail
+
+readonly BAT_OPTS=(
+    --number
+    --force-colorization
+    --paging=never
+    --style='changes,numbers'
+)
+
+case "$1" in
+    --from-grep)
+        [[ "$2" =~ ^([^:]+):([0-9]+): ]]
+        path=${BASH_REMATCH[1]}
+        line_number=${BASH_REMATCH[2]}
+
+        if (( line_number < LINES )); then
+            line_range=:$LINES
+        else
+            line_length=$(head -$(( line_number + LINES / 2 )) "$path" | wc -l | tr -d ' ')
+            line_range=$(( line_length - LINES + 1 )):$line_length
+        fi
+
+        bat "${BAT_OPTS[@]}" \
+            --highlight-line "$line_number" \
+            --line-range "$line_range" \
+            "$path"
+        ;;
+esac

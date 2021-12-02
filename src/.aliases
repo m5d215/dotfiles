@@ -87,6 +87,7 @@ if command -v abbrev-alias >/dev/null 2>&1; then
 
     abbrev-alias -g F='| fzf'
     abbrev-alias -g FP="| fzf --preview='bat --color=always --style=numbers {}' --preview-window=down"
+    abbrev-alias -g Fgrep="| fzf --preview='preview --from-grep {}' --preview-window=border-left"
 
     abbrev-alias -g J='| jq .'
 
