@@ -98,4 +98,6 @@ if command -v abbrev-alias >/dev/null 2>&1; then
         abbrev-alias -g CC='| tee >(pbcopy)'
         abbrev-alias -g P='pbpaste'
     fi
+
+    abbrev-alias -g VS='| code -'
 fi
