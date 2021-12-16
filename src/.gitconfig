@@ -11,3 +11,5 @@
     quotepath = false
 [diff "sjis"]
     textconv = nkf
+[init]
+    defaultBranch = main
