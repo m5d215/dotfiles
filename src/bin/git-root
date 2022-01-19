@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -Ceuo pipefail
+
+_d=$PWD
+
+while [ -n "$_d" ]
+do
+    if [ -d "$_d/.git" ]; then
+        echo "$_d"
+        exit
+    fi
+
+    _d=${_d%/*}
+done
+
+exit 1
