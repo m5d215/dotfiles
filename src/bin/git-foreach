@@ -55,7 +55,7 @@ function subcommand_exec {
 }
 
 function subcommand_list {
-    find "$opt_home" -mindepth 4 -maxdepth 4 -type d -name .git -print |
+    find -L "$opt_home" -mindepth 4 -maxdepth 4 -type d -name .git -print |
         grep -E "${opt_fqdn:-[^/]+}/${opt_user:-[^/]+}/${opt_name:-[^/]+}/.git$" |
         sort |
         cut -c "$((${#opt_home} + 2))-" |
