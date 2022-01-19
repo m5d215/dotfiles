@@ -66,6 +66,7 @@ if command -v powerline-go >/dev/null; then
             -modules-right duration,git \
             -numeric-exit-codes \
             -path-aliases $'\~/src=@GIT,\~/Library/Mobile Documents/com~apple~CloudDocs=@iCloud' \
+            -git-assume-unchanged-size 1024 \
             -shell zsh \
         )"
     }
