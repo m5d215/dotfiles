@@ -28,7 +28,7 @@ local _commit
 function interaction {
     local _json
     _json=$(
-        git log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset' | pretty_commit_message_prefix \
+        git log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset' -1000 | pretty_commit_message_prefix \
         | fzf \
             --header='enter: diff | C-f: files | C-i: inline select | C-l: reload' \
             --preview=$'

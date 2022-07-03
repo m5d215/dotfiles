@@ -1,5 +1,6 @@
 [alias]
     amend = commit --amend -C HEAD
+    fixup = commit --fixup
     graph = log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset'
     details = log --graph --color --all --date=iso --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     overview = log --graph --color --all --date=iso --date-order --decorate --stat --find-renames

@@ -44,5 +44,3 @@ source ~/src/github.com/momo-lab/bash-abbrev-alias/abbrev-alias.plugin.bash
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
-
-. ~/.aliases

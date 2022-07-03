@@ -1,0 +1,68 @@
+abbrevs:
+  - name: '| grep'
+    abbr: G
+    snippet: '| grep'
+    global: true
+
+  - name: '| less'
+    abbr: L
+    snippet: '| less'
+    global: true
+
+  - name: '| head'
+    abbr: H
+    snippet: '| head'
+    global: true
+
+  - name: '| tail'
+    abbr: T
+    snippet: '| tail'
+    global: true
+
+  - name: '| xargs'
+    abbr: X
+    snippet: '| xargs'
+    global: true
+
+  - name: '| xargs grep'
+    abbr: XG
+    snippet: '| xargs grep --color=yes -Hn'
+    global: true
+
+  - name: '| fzf'
+    abbr: F
+    snippet: '| fzf'
+    global: true
+
+  - name: '| jq'
+    abbr: J
+    snippet: '| jq .'
+    global: true
+
+  - name: '| bat'
+    abbr: B
+    snippet: '| bat'
+    global: true
+
+  - name: 'copy to clipboard'
+    abbr: C
+    snippet: '| pbcopy'
+    global: true
+    if: '[[ "$OSTYPE" =~ darwin ]]'
+
+  - name: 'copy to clipboard'
+    abbr: CC
+    snippet: '| tee >(pbcopy)'
+    global: true
+    if: '[[ "$OSTYPE" =~ darwin ]]'
+
+  - name: 'paste from clipboard'
+    abbr: P
+    snippet: 'pbpaste |'
+    global: true
+    if: '[[ "$OSTYPE" =~ darwin ]]'
+
+  - name: VSCode
+    abbr: VS
+    snippet: '| code -'
+    global: true

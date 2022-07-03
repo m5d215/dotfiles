@@ -16,6 +16,3 @@ trim_trailing_whitespace = false
 
 [*.yml]
 indent_size = 2
-
-[src/.pmy/snippets/*.txt]
-trim_trailing_whitespace = false

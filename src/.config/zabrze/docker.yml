@@ -1,0 +1,52 @@
+abbrevs:
+  - name: docker image
+    abbr: i
+    snippet: image
+    global: true
+    context: '^docker\s'
+
+  - name: docker container
+    abbr: c
+    snippet: container
+    global: true
+    context: '^docker\s'
+
+  - name: docker container run
+    abbr: r
+    snippet: run --rm -it
+    global: true
+    context: '^docker\scontainer\s'
+
+  - name: docker container run
+    abbr: r
+    snippet: container run --rm -it
+    global: true
+    context: '^docker\s'
+
+  - name: docker container exec
+    abbr: e
+    snippet: exec -it
+    global: true
+    context: '^docker\scontainer\s'
+
+  - name: docker container exec
+    abbr: e
+    snippet: container exec -it
+    global: true
+    context: '^docker\s'
+
+  - name: docker volume
+    abbr: v
+    snippet: volume
+    global: true
+    context: '^docker\s'
+
+  - name: docker network
+    abbr: n
+    snippet: network
+    global: true
+    context: '^docker\s'
+
+  - name: docker compose
+    abbr: dc
+    snippet: docker compose

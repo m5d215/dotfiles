@@ -10,6 +10,7 @@ setopt hist_no_store
 setopt hist_reduce_blanks
 setopt share_history
 setopt interactivecomments
+setopt extended_glob
 
 # history
 HISTFILE=$ZDOTDIR/.zsh_history
@@ -17,27 +18,75 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 function zshaddhistory {
-    (( $#1 > 3 ))
-    ! [[ "$1" =~ ^\./ ]]
+    (( $#1 > 3 )) || return 1
+    ! [[ "$1" =~ ^\./ ]] || return 1
+    ! [[ "$1" =~ ^(exa|ls) ]] || return 1
 }
 
-# zinit
-. "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+# ZI
+typeset -A ZI
+ZI[BIN_DIR]=~/.zi/bin
 
-zinit load hlissner/zsh-autopair
-zinit ice from"gh-r" as"command"
-zinit load junegunn/fzf
-zinit ice from"gh-r" as"command" mv"powerline-go-* -> powerline-go"
-zinit load justjanne/powerline-go
-zinit load momo-lab/zsh-abbrev-alias
-zinit load zsh-users/zsh-autosuggestions
-zinit load zsh-users/zsh-completions
-zinit load zsh-users/zsh-syntax-highlighting
+if [ ! -d "$ZI[BIN_DIR]" ]; then
+    git clone https://github.com/z-shell/zi.git "$ZI[BIN_DIR]"
+fi
 
-autoload -U compinit
-compinit -C
+source "${ZI[BIN_DIR]}/zi.zsh"
+
+autoload -Uz _zi
+(( ${+_comps} )) && _comps[zi]=_zi
+
+zi light z-shell/z-a-bin-gem-node
+
+zi ice from'gh-r' as'command' mv'bat* bat' sbin'**/bat(.exe|) -> bat'
+zi light @sharkdp/bat
+
+zi ice from'gh-r' as'command' sbin'**/exa -> exa' atclone'cp -vf completions/exa.zsh _exa'
+zi light ogham/exa
+
+zi ice from'gh-r' as'command' mv'fd* fd' sbin'**/fd(.exe|) -> fd'
+zi light @sharkdp/fd
+
+zi ice from'gh-r' as'command'
+zi light junegunn/fzf
+
+zi ice from'gh-r' as'command' mv'jq* jq'
+zi light stedolan/jq
+
+zi ice from'gh-r' as'command' mv'hyperfine* hyperfine' sbin'**/hyperfine(.exe|) -> hyperfine'
+zi light @sharkdp/hyperfine
+
+zi ice from'gh-r' as'command' cp'powerline-go-* -> powerline-go'
+zi light justjanne/powerline-go
+
+zi wait lucid for \
+    atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
+        z-shell/F-Sy-H \
+    blockf \
+        zsh-users/zsh-completions \
+    atload'!_zsh_autosuggest_start' \
+        zsh-users/zsh-autosuggestions
+
+zi ice wait lucid
+zi light hlissner/zsh-autopair
+
+zi ice as'command' \
+    pick'argparse' \
+    pick'git-foreach' \
+    pick'git-root' \
+    pick'preview'
+zi light ~/src/github.com/m5d215/dotfiles/src/bin
+
+zi ice as'completion'
+zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
+zi ice load'![ -d "$PWD/vendor/bin" ]' unload'![ ! -d "$PWD/vendor/bin" ]' \
+    nocd atinit'export PATH=$PWD/vendor/bin:$PATH'
+zi light zdharma-continuum/null
+
+zi from'gh-r' as'command' blockf light-mode for \
+    atload'eval "$(zabrze init --bind-keys)"' \
+    Ryooooooga/zabrze
 
 # powerline
 if command -v powerline-go >/dev/null; then
@@ -86,13 +135,6 @@ if command -v powerline-go >/dev/null; then
     fi
 fi
 
-. ~/.aliases
-
-# pmy
-if command -v pmy >/dev/null; then
-    eval "$(pmy init)"
-fi
-
 # key binding
 function __discover_autoload {
     local _name
@@ -119,3 +161,12 @@ bindkey '^e^r' replace-command
 bindkey '^e^l' ls-now
 bindkey '^|' unpipe
 bindkey '^e^i' toggle-history-ignore
+
+# aliases
+alias grep='grep --color=auto'
+alias less='less --tabs=4'
+
+if command -v exa >/dev/null 2>&1; then
+    alias exa='exa --classify --color=always --group-directories-first --group --header --git --time-style long-iso'
+    alias ls=exa
+fi
