@@ -128,6 +128,7 @@ if command -v powerline-go >/dev/null; then
     }
 
     function install_powerline_precmd {
+        local s
         for s in "${precmd_functions[@]}"
         do
             if [ "$s" = "powerline_precmd" ]; then
