@@ -107,6 +107,13 @@ if command -v powerline-go >/dev/null; then
             unset __TIMER
         fi
 
+        local _path_aliases
+        _path_aliases=$'~/src/=\ue702 SRC'
+        _path_aliases+=$',~/src/github.com=\uf09b GITHUB'
+        _path_aliases+=$',~/Library/Mobile Documents/com~apple~CloudDocs=\uf537 iCloud'
+        _path_aliases+=$',~/Documents=\uf537 Documents'
+        _path_aliases+=$',~/Downloads=\uf6d9 Downloads'
+
         eval "$(powerline-go \
             -duration $__DURATION \
             -error $__ERRCODE \
@@ -114,7 +121,7 @@ if command -v powerline-go >/dev/null; then
             -modules ssh,cwd,perms,jobs,exit \
             -modules-right duration,git \
             -numeric-exit-codes \
-            -path-aliases $'\~/src=@GIT,\~/Library/Mobile Documents/com~apple~CloudDocs=@iCloud' \
+            -path-aliases "$_path_aliases" \
             -git-assume-unchanged-size 1024 \
             -shell zsh \
         )"
