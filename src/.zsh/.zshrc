@@ -80,10 +80,6 @@ zi light ~/src/github.com/m5d215/dotfiles/src/bin
 zi ice as'completion'
 zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
-zi ice load'![ -d "$PWD/vendor/bin" ]' unload'![ ! -d "$PWD/vendor/bin" ]' \
-    nocd atinit'export PATH=$PWD/vendor/bin:$PATH'
-zi light zdharma-continuum/null
-
 zi from'gh-r' as'command' blockf light-mode for \
     atload'eval "$(zabrze init --bind-keys)"' \
     Ryooooooga/zabrze
@@ -115,6 +111,7 @@ if command -v powerline-go >/dev/null; then
         _path_aliases+=$',~/Downloads=\uf6d9 Downloads'
 
         eval "$(powerline-go \
+            -cwd-mode semifancy \
             -duration $__DURATION \
             -error $__ERRCODE \
             -eval \
