@@ -14,3 +14,8 @@
     textconv = nkf
 [init]
     defaultBranch = main
+[filter "lfs"]
+    smudge = git-lfs smudge --skip -- %f
+    process = git-lfs filter-process --skip
+    required = true
+    clean = git-lfs clean -- %f
