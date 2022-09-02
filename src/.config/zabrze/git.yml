@@ -20,7 +20,7 @@ abbrevs:
     context: '^git\s'
 
   - name: git insert branch
-    abbr: '!b'
+    abbr: '#!b'
     snippet: |-
       $(
         git branch --all --color=always \
@@ -31,13 +31,11 @@ abbrevs:
       )
     evaluate: true
     global: true
-    context: '^git\s'
 
   - name: git insert origin/develop
-    abbr: '!d'
+    abbr: '#!d'
     snippet: origin/develop
     global: true
-    context: '^git\s'
 
   - name: git commit
     abbr: c
