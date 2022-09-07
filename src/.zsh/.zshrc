@@ -23,6 +23,20 @@ function zshaddhistory {
     ! [[ "$1" =~ ^(exa|ls) ]] || return 1
 }
 
+# command_not_found_handler
+if command -v docker >/dev/null && ! command -v pokemonsay >/dev/null; then
+    function pokemonsay {
+        docker run --rm -it xaviervia/pokemonsay --no-name --think "$@"
+    }
+fi
+
+if command -v pokemonsay >/dev/null; then
+    function command_not_found_handler {
+        docker run --rm -it xaviervia/pokemonsay --no-name --think "command '$1' not found"
+        return 127
+    }
+fi
+
 # ZI
 typeset -A ZI
 ZI[BIN_DIR]=~/.zi/bin
