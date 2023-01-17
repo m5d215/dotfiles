@@ -32,7 +32,7 @@ fi
 
 if command -v pokemonsay >/dev/null; then
     function command_not_found_handler {
-        docker run --rm -it xaviervia/pokemonsay --no-name --think "command '$1' not found"
+        docker run --rm -it xaviervia/pokemonsay --no-name --think "command '$1' not found" 2>/dev/null
         return 127
     }
 fi
