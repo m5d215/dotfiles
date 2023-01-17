@@ -89,12 +89,12 @@ abbrevs:
   # find
   - name: find files
     abbr: FF
-    snippet: find . -type f
+    snippet: find .{} -type f
 
   - name: find directories
     abbr: FD
-    snippet: find . -type d
+    snippet: find .{} -type d
 
   - name: find (exclude .git node_modules vendor)
     abbr: FE
-    snippet: find . -type d \( -name .git -o -name node_modules -o -name vendor \) -prune -o -print
+    snippet: find .{} -type d \( -name .git -o -name node_modules -o -name vendor \) -prune -o -print
