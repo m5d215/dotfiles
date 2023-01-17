@@ -39,14 +39,8 @@ function interaction {
                     } | head -n "$LINES"
                 ' \
             --preview-window=border-left \
-            --bind=$'ctrl-f:execute(
-                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{})
-                    [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller --name-status "$_commit" >/dev/tty
-                )' \
-            --bind=$'enter:execute(
-                    local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{})
-                    [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller "$_commit" >/dev/tty
-                )' \
+            --bind=$'ctrl-f:execute(local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{}) && [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller --name-status "$_commit" >/dev/tty)' \
+            --bind=$'enter:execute(local _commit=$(sed -E "s/^[^0-9a-f]+([0-9a-f]*) .*/\\1/" <<<{}) && [ ! -z "$_commit" ] && git show --color=always --date=iso --pretty=fuller "$_commit" >/dev/tty)' \
             --query="$_query" \
             --print-query \
             --expect='ctrl-i,ctrl-l' \

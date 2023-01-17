@@ -14,7 +14,7 @@ function interaction {
     _json=$(
         git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' \
         | fzf \
-            --height=$(( $(git branch --all | grep -cvE '(^|/)HEAD') + 3 )) \
+            --height='~100%' \
             --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
             --query="$_query" \
             --print-query \
