@@ -33,6 +33,7 @@ function create_link {
     ln -fsv "$ROOT/src/$_src" "$HOME/$_dest"
 }
 
+create_link .config/git
 create_link .config/zabrze
 create_link .zsh/functions
 create_link .zsh/.zshenv
@@ -41,7 +42,6 @@ create_link bin
 create_link .bash_profile
 create_link .bashrc
 create_link .editorconfig4 .editorconfig
-create_link .gitconfig
 create_link .tmux.conf
 create_link .vimrc
 create_link .zshenv
