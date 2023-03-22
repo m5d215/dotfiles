@@ -61,11 +61,11 @@ abbrevs:
 
   - name: git log --graph
     abbr: gg
-    snippet: git log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset'
+    snippet: git log --graph --color --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset' --all
 
   - name: git log --graph
     abbr: g
-    snippet: log --graph --color --all --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset'
+    snippet: log --graph --color --date-order --decorate --pretty=format:'%C(auto)%h %d %s %C(cyan bold)(%cr)%Creset' --all
     global: true
     context: '^git\s'
 
