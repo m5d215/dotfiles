@@ -1,5 +1,5 @@
-set background=dark
-colorscheme hybrid_material
+" set background=dark
+" colorscheme hybrid_material
 
 " Enable syntax highlighting
 syntax on

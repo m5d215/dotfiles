@@ -89,7 +89,7 @@ zi ice as'command' \
     pick'git-foreach' \
     pick'git-root' \
     pick'preview'
-zi light ~/src/github.com/m5d215/dotfiles/src/bin
+zi light ~/src/github.com/hasez/dotfiles/src/bin
 
 zi ice as'completion'
 zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
@@ -129,13 +129,25 @@ if command -v powerline-go >/dev/null; then
             -duration $__DURATION \
             -error $__ERRCODE \
             -eval \
-            -modules ssh,cwd,perms,jobs,exit \
-            -modules-right duration,git \
+            -modules ssh,cwd,perms,jobs,exit,git,duration \
+            -newline \
             -numeric-exit-codes \
             -path-aliases "$_path_aliases" \
             -git-assume-unchanged-size 1024 \
             -shell zsh \
         )"
+        # eval "$(powerline-go \
+        #     -cwd-mode semifancy \
+        #     -duration $__DURATION \
+        #     -error $__ERRCODE \
+        #     -eval \
+        #     -modules ssh,cwd,perms,jobs,exit \
+        #     -modules-right duration,git \
+        #     -numeric-exit-codes \
+        #     -path-aliases "$_path_aliases" \
+        #     -git-assume-unchanged-size 1024 \
+        #     -shell zsh \
+        # )"
     }
 
     function install_powerline_precmd {
@@ -188,4 +200,9 @@ alias less='less --tabs=4'
 if command -v exa >/dev/null 2>&1; then
     alias exa='exa --classify --color=always --group-directories-first --group --header --git --time-style long-iso'
     alias ls=exa
+fi
+
+# Your .zshrc localizations
+if [ -f "$ZDOTDIR/.zshrc.local" ]; then
+    source "$ZDOTDIR/.zshrc.local"
 fi

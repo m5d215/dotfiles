@@ -9,10 +9,10 @@ set -u
     ls -Al ~
 '
 
-ROOT=${ROOT:-~/src/github.com/m5d215/dotfiles}
+ROOT=${ROOT:-~/src/github.com/hasez/dotfiles}
 
 if [ ! -d "$ROOT" ]; then
-    git clone https://github.com/m5d215/dotfiles.git "$ROOT"
+    git clone https://github.com/hasez/dotfiles.git "$ROOT"
 fi
 
 mkdir -p ~/.config
@@ -37,11 +37,13 @@ create_link .config/zabrze
 create_link .zsh/functions
 create_link .zsh/.zshenv
 create_link .zsh/.zshrc
+create_link .zsh/.zshrc.local
 create_link bin
 create_link .bash_profile
 create_link .bashrc
 create_link .editorconfig4 .editorconfig
 create_link .gitconfig
+create_link .gitconfig.local
 create_link .tmux.conf
 create_link .vimrc
 create_link .zshenv
@@ -57,4 +59,20 @@ if [ ! -f ~/.vim/autoload/plug.vim ]; then
     sed -e '/colorscheme/d' ~/.vimrc >/tmp/.vimrc_deleteme
     vim -u /tmp/.vimrc_deleteme +PlugInstall +qall </dev/null >/dev/null 2>&1
     rm /tmp/.vimrc_deleteme
+fi
+
+# Setup git config user.email and user.name
+GIT_CONFIG_LOCAL=~/.gitconfig.local
+if [ ! -e $GIT_CONFIG_LOCAL ]; then
+    echo -n "git config user.email?> "
+    read -r GIT_AUTHOR_EMAIL
+
+    echo -n "git config user.name?> "
+    read -r GIT_AUTHOR_NAME
+
+    cat << EOF > $GIT_CONFIG_LOCAL
+[user]
+    name = $GIT_AUTHOR_NAME
+    email = $GIT_AUTHOR_EMAIL
+EOF
 fi
