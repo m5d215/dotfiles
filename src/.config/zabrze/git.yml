@@ -37,6 +37,11 @@ abbrevs:
     snippet: origin/develop
     global: true
 
+  - name: git insert origin/main
+    abbr: '#!m'
+    snippet: origin/main
+    global: true
+
   - name: git commit
     abbr: c
     snippet: commit
