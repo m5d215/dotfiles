@@ -66,3 +66,9 @@ abbrevs:
     abbr: VS
     snippet: '| code -'
     global: true
+
+  - name: with timestamp
+    abbr: TS
+    snippet: |-
+      | gsed -re 's/^.*$/printf "%s | %s" "$(gdate +%Y-%m-%dT%H:%M:%S.%3N)" "&"/e'
+    global: true
