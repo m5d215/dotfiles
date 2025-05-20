@@ -39,9 +39,12 @@ function execute_command {
 }
 
 function subcommand_git {
+    local _pretty_home
+    _pretty_home=${opt_home/$HOME/\~}
+
     while IFS=$'\n' read -r _repo
     do
-        echo -e "\033[1;96m$ git -C $opt_home/$_repo ${opt_git[*]}\033[0;0m"
+        echo -e "\033[1;96m$ git -C $_pretty_home/$_repo ${opt_git[*]}\033[0;0m"
         execute_command git -C "$opt_home/$_repo" "${opt_git[@]}"
     done < <(subcommand_list)
 }
