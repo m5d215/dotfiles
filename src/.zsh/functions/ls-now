@@ -5,9 +5,9 @@ local _count
 _count=$(find . -maxdepth 1 -type d \( -name .git -o -name node_modules \) -prune -o -maxdepth 2 -print 2>/dev/null | wc -l)
 
 if (( _count < LINES )); then
-    BUFFER=" exa --long --tree --classify --color=always --all --level 2 --group-directories-first --ignore-glob '.git|node_modules' --git-ignore --group --header --time-style long-iso --git"
+    BUFFER=" eza --long --tree --classify --color=always --all --level 2 --group-directories-first --ignore-glob '.git|node_modules' --git-ignore --group --header --time-style long-iso --git"
 else
-    BUFFER=" exa --long --classify --color=always --all --group-directories-first --group --header --time-style long-iso --git"
+    BUFFER=" eza --long --classify --color=always --all --group-directories-first --group --header --time-style long-iso --git"
 fi
 
 zle accept-line

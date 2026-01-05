@@ -75,11 +75,11 @@ abbrevs:
   # ls
   - name: ls --long
     abbr: l
-    snippet: 'exa --long'
+    snippet: 'eza --long'
 
   - name: ls --long --all
     abbr: ll
-    snippet: 'exa --long --all'
+    snippet: 'eza --long --all'
 
   # ssh
   - name: ssh (silently)
