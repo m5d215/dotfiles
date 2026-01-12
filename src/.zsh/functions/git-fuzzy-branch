@@ -15,10 +15,10 @@ function interaction {
         git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' \
         | fzf \
             --height=20 \
-            --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
+            --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-w: create-worktree | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
             --query="$_query" \
             --print-query \
-            --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-i,ctrl-l,ctrl-x' \
+            --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-w,ctrl-i,ctrl-l,ctrl-x' \
         | jq -R . | jq -scr .
     )
 
@@ -67,6 +67,10 @@ do
             ;;
         ctrl-p:local)
             BUFFER=" git push -u $(git remote | head -1) $_branch"
+            ;;
+        ctrl-w:*)
+            BUFFER=" git worktree add ../$(basename "$(git rev-parse --show-toplevel)")@${_branch//\//_} $_branch"
+            _accept=0
             ;;
         ctrl-i:*)
             LBUFFER+=$_branch

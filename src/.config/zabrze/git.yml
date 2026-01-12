@@ -82,3 +82,22 @@ abbrevs:
     snippet: status --short --branch
     global: true
     context: '^git\s'
+
+  - name: git worktree
+    abbr: w
+    snippet: worktree
+    global: true
+    context: '^git\s'
+
+  - name: list git worktree
+    abbr: remove
+    snippet: |-
+      remove $(
+        git worktree list \
+        | fzf \
+          --height=5 \
+        | cut -d' ' -f1
+      )
+    evaluate: true
+    global: true
+    context: '^git\sworktree\s'
