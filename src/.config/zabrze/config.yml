@@ -81,6 +81,10 @@ abbrevs:
     abbr: ll
     snippet: 'eza --long --all'
 
+  - name: tree
+    abbr: tree
+    snippet: eza --tree
+
   # ssh
   - name: ssh (silently)
     abbr: ssh-silent
