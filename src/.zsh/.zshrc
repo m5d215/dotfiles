@@ -114,9 +114,9 @@ if command -v powerline-go >/dev/null; then
         local _path_aliases
         _path_aliases=$'~/src/=\ue702 SRC'
         _path_aliases+=$',~/src/github.com=\uf09b GITHUB'
-        _path_aliases+=$',~/Library/Mobile Documents/com~apple~CloudDocs=\uf537 iCloud'
-        _path_aliases+=$',~/Documents=\uf537 Documents'
-        _path_aliases+=$',~/Downloads=\uf6d9 Downloads'
+        _path_aliases+=$',~/Library/Mobile Documents/com~apple~CloudDocs=\uf0c2 iCloud'
+        _path_aliases+=$',~/Documents=\uf07b Documents'
+        _path_aliases+=$',~/Downloads=\uf019 Downloads'
 
         eval "$(powerline-go \
             -cwd-mode semifancy \
