@@ -26,24 +26,17 @@ abbrevs:
 
   # cd
   - name: cd ..
-    abbr: ..
-    snippet: 'cd ..'
-
-  - name: cd ../..
-    abbr: ...
-    snippet: 'cd ../..'
-
-  - name: cd ../../..
-    abbr: ....
-    snippet: 'cd ../../..'
-
-  - name: cd ../../../..
-    abbr: .....
-    snippet: 'cd ../../../..'
+    abbr-pattern: '^\.{2,}$'
+    snippet: |-
+      $(
+        _path=$(printf '../%.0s' $(seq 1 $(( ${#abbr}-1 ))))
+        printf ' cd %s' "${_path%/}"
+      )
+    evaluate: true
 
   - name: 'cd ~'
     abbr: '~'
-    snippet: 'cd ~'
+    snippet: ' cd ~'
 
   # curl
   - name: curl method
