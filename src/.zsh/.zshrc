@@ -180,6 +180,6 @@ alias grep='grep --color=auto'
 alias less='less --tabs=4'
 
 if command -v eza >/dev/null 2>&1; then
-    alias eza='eza --classify --color=always --group-directories-first --group --header --git --time-style long-iso'
+    alias eza='eza --classify --color=always --icons --group-directories-first --group --header --git --time-style long-iso'
     alias ls=eza
 fi
