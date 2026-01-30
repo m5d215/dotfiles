@@ -1,0 +1,60 @@
+[[snippets]]
+name = "docker image"
+trigger = "i"
+snippet = "image"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker container"
+trigger = "c"
+snippet = "container"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker container run"
+trigger = "r"
+snippet = "run --rm -it"
+global = true
+context = "^docker\\scontainer\\s"
+
+[[snippets]]
+name = "docker container run"
+trigger = "r"
+snippet = "container run --rm -it"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker container exec"
+trigger = "e"
+snippet = "exec -it"
+global = true
+context = "^docker\\scontainer\\s"
+
+[[snippets]]
+name = "docker container exec"
+trigger = "e"
+snippet = "container exec -it"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker volume"
+trigger = "v"
+snippet = "volume"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker network"
+trigger = "n"
+snippet = "network"
+global = true
+context = "^docker\\s"
+
+[[snippets]]
+name = "docker compose"
+trigger = "dc"
+snippet = "docker compose"

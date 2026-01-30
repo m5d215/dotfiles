@@ -1,0 +1,20 @@
+[[snippets]]
+name = "yyyymmdd"
+trigger = "!yyyymmdd"
+snippet = "$(date '+%Y%m%d')"
+evaluate = true
+global = true
+
+[[snippets]]
+name = "yyyy-mm-dd"
+trigger = "!yyyy-mm-dd"
+snippet = "$(date '+%Y-%m-%d')"
+evaluate = true
+global = true
+
+[[snippets]]
+name = "yyyy/mm/dd"
+trigger = "!yyyy/mm/dd"
+snippet = "$(date '+%Y/%m/%d')"
+evaluate = true
+global = true

@@ -1,0 +1,86 @@
+[[snippets]]
+name = "| grep"
+trigger = "G"
+snippet = "| grep"
+global = true
+
+[[snippets]]
+name = "| less"
+trigger = "L"
+snippet = "| less"
+global = true
+
+[[snippets]]
+name = "| head"
+trigger = "H"
+snippet = "| head"
+global = true
+
+[[snippets]]
+name = "| tail"
+trigger = "T"
+snippet = "| tail"
+global = true
+
+[[snippets]]
+name = "| xargs"
+trigger = "X"
+snippet = "| xargs"
+global = true
+
+[[snippets]]
+name = "| xargs grep"
+trigger = "XG"
+snippet = "| xargs grep --color=yes -Hn"
+global = true
+
+[[snippets]]
+name = "| fzf"
+trigger = "F"
+snippet = "| fzf"
+global = true
+
+[[snippets]]
+name = "| jq"
+trigger = "J"
+snippet = "| jq ."
+global = true
+
+[[snippets]]
+name = "| bat"
+trigger = "B"
+snippet = "| bat"
+global = true
+
+[[snippets]]
+name = "copy to clipboard"
+trigger = "C"
+snippet = "| pbcopy"
+global = true
+if = '[[ "$OSTYPE" =~ darwin ]]'
+
+[[snippets]]
+name = "copy to clipboard"
+trigger = "CC"
+snippet = "| tee >(pbcopy)"
+global = true
+if = '[[ "$OSTYPE" =~ darwin ]]'
+
+[[snippets]]
+name = "paste from clipboard"
+trigger = "P"
+snippet = "pbpaste |"
+global = true
+if = '[[ "$OSTYPE" =~ darwin ]]'
+
+[[snippets]]
+name = "VSCode"
+trigger = "VS"
+snippet = "| code -"
+global = true
+
+[[snippets]]
+name = "with timestamp"
+trigger = "TS"
+snippet = "| gsed -re 's/^.*$/printf \"%s | %s\" \"$(gdate +%Y-%m-%dT%H:%M:%S.%3N)\" \"&\"/e'"
+global = true

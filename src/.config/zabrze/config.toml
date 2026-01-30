@@ -1,0 +1,91 @@
+[[snippets]]
+name = "select files"
+trigger-pattern = "(?:~?/?(?:[.\\w-]+/)*)(?:[.\\w-]*)\\*\\*$"
+snippet = """
+$(
+  abbr=${abbr%\\*\\*}
+  fd --hidden --no-ignore --full-path --color always --exclude .git '' "${abbr:-.}" \\
+  | fzf --multi --height=50% --min-height=5 --info=inline
+)"""
+evaluate = true
+global = true
+
+[[snippets]]
+name = "bat --language="
+trigger = "l"
+snippet = "--language={}"
+global = true
+context = "^bat\\s"
+
+[[snippets]]
+name = "bat --language=diff"
+trigger = "d"
+snippet = "--language=diff"
+global = true
+context = "^bat\\s"
+
+[[snippets]]
+name = "cd .."
+abbr-pattern = "^\\.{2,}$"
+snippet = """
+$(
+  _path=$(printf '../%.0s' $(seq 1 $(( ${#abbr}-1 ))))
+  printf ' cd %s' "${_path%/}"
+)"""
+evaluate = true
+
+[[snippets]]
+name = "cd ~"
+trigger = "~"
+snippet = " cd ~"
+
+[[snippets]]
+name = "curl method"
+trigger = "-X"
+snippet = """
+-X $(cat <<EOT | fzf --height=6 --info=hidden --prompt='-X '
+GET
+POST
+PUT
+DELETE
+PATCH
+EOT
+)"""
+evaluate = true
+global = true
+context = "^curl\\s"
+
+[[snippets]]
+name = "ls --long"
+trigger = "l"
+snippet = "eza --long"
+
+[[snippets]]
+name = "ls --long --all"
+trigger = "ll"
+snippet = "eza --long --all"
+
+[[snippets]]
+name = "tree"
+trigger = "tree"
+snippet = "eza --tree"
+
+[[snippets]]
+name = "ssh (silently)"
+trigger = "ssh-silent"
+snippet = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR"
+
+[[snippets]]
+name = "find files"
+trigger = "FF"
+snippet = "find .{} -type f"
+
+[[snippets]]
+name = "find directories"
+trigger = "FD"
+snippet = "find .{} -type d"
+
+[[snippets]]
+name = "find (exclude .git node_modules vendor)"
+trigger = "FE"
+snippet = "find .{} -type d \\( -name .git -o -name node_modules -o -name vendor \\) -prune -o -print"
