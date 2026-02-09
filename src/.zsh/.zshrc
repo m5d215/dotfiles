@@ -4,7 +4,6 @@
 # Options
 setopt extended_history
 setopt hist_ignore_all_dups
-setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_no_store
 setopt hist_reduce_blanks
@@ -32,7 +31,7 @@ fi
 
 if command -v pokemonsay >/dev/null; then
     function command_not_found_handler {
-        docker run --rm -it xaviervia/pokemonsay --no-name --think "command '$1' not found" 2>/dev/null
+        pokemonsay "command '$1' not found" 2>/dev/null
         return 127
     }
 fi
@@ -78,11 +77,7 @@ zi wait lucid for \
 zi ice wait lucid
 zi light hlissner/zsh-autopair
 
-zi ice as'command' \
-    pick'argparse' \
-    pick'git-foreach' \
-    pick'git-root' \
-    pick'preview'
+zi ice as'command' pick'*'
 zi light ~/src/github.com/m5d215/dotfiles/src/bin
 
 zi ice as'completion'
@@ -120,8 +115,8 @@ if command -v powerline-go >/dev/null; then
 
         eval "$(powerline-go \
             -cwd-mode semifancy \
-            -duration $__DURATION \
-            -error $__ERRCODE \
+            -duration "$__DURATION" \
+            -error "$__ERRCODE" \
             -eval \
             -modules ssh,cwd,perms,jobs,exit \
             -modules-right duration,git \
@@ -161,7 +156,7 @@ function __discover_autoload {
 }
 
 __discover_autoload
-unset __discover_autoload
+unset -f __discover_autoload
 
 bindkey '^[^' cd-home
 bindkey '^^' cd-up
