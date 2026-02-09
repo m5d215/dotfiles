@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -e
-set -u
+set -euo pipefail
 
 : docker container run --rm -it -v "$PWD:$PWD":ro -w "$PWD" alpine:3 sh -c '
     apk --no-cache add bash curl git vim
@@ -18,19 +17,13 @@ fi
 mkdir -p ~/.config
 mkdir -p ~/.zsh
 
-function create_link {
+create_link() {
     local _src
     local _dest
     _src=$1
     _dest=${2:-$1}
 
-    if [ -e "$HOME/$_dest" ] && [ ! -s "$HOME/$_dest" ]; then
-        mkdir -p "$HOME/.dotfiles-backup"
-        mv "$HOME/$_dest" "$HOME/.dotfiles-backup/$_dest"
-    fi
-
-    rm -f "$HOME/$_dest"
-    ln -fsv "$ROOT/src/$_src" "$HOME/$_dest"
+    ln -fsnv "$ROOT/src/$_src" "$HOME/$_dest"
 }
 
 create_link .config/git
@@ -54,7 +47,9 @@ fi
 # Install vim-plug
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
     curl -fsSL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o ~/.vim/autoload/plug.vim --create-dirs
-    sed -e '/colorscheme/d' ~/.vimrc >/tmp/.vimrc_deleteme
-    vim -u /tmp/.vimrc_deleteme +PlugInstall +qall </dev/null >/dev/null 2>&1
-    rm /tmp/.vimrc_deleteme
+    vimrc_tmp=$(mktemp "${TMPDIR:-/tmp}/vimrc.XXXXXX")
+    trap 'rm -f "$vimrc_tmp"' EXIT
+    sed -e '/colorscheme/d' ~/.vimrc >"$vimrc_tmp"
+    vim -u "$vimrc_tmp" +PlugInstall +qall </dev/null >/dev/null 2>&1
+    rm -f "$vimrc_tmp"
 fi
