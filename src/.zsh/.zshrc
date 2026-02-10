@@ -180,4 +180,4 @@ if command -v eza >/dev/null 2>&1; then
 fi
 
 # mise
-eval "$(mise activate zsh)"
+export PATH="$HOME/.local/share/mise/shims:$PATH"
