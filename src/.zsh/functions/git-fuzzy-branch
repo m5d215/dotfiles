@@ -9,17 +9,18 @@ local _key
 local _branch
 local _location
 
-function interaction {
+interaction() {
     local _json
     _json=$(
-        git branch --all --color=always | grep --color=yes -vE '(^|/)HEAD' \
+        git branch --all --color=always | grep --color=never -vE '(^|/)HEAD' \
         | fzf \
+            --ansi \
             --height=20 \
             --header='enter: checkout | C-n: create | C-d: delete | C-p: push | C-w: create-worktree | C-i: inline select | C-l: reload | C-x: toggle dry-run' \
             --query="$_query" \
             --print-query \
             --expect='enter,ctrl-n,ctrl-d,ctrl-p,ctrl-w,ctrl-i,ctrl-l,ctrl-x' \
-        | jq -R . | jq -scr .
+        | jq -Rs 'split("\n") | if .[-1] == "" then .[:-1] else . end'
     )
 
     local _length
@@ -30,6 +31,7 @@ function interaction {
         IFS= read -r _branch
     } < <(jq -cr 'length, .[]' <<<"$_json")
 
+    # fzf outputs 3 lines on selection: query, key, branch
     (( _length == 3 ))
 }
 
@@ -58,6 +60,7 @@ do
             ;;
         ctrl-d:remote)
             BUFFER=" git push ${_branch%%/*} :${_branch#*/}"
+            _accept=0
             ;;
         ctrl-d:local)
             BUFFER=" git branch -D $_branch"
