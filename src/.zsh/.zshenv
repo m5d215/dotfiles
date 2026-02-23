@@ -29,3 +29,9 @@ if [ -d /opt/homebrew ]; then
     export INFOPATH=$HOMEBREW_PREFIX/share/info:${INFOPATH:-}
     export HOMEBREW_NO_AUTO_UPDATE=1
 fi
+
+# direnv
+if (( $+commands[direnv] )); then
+    export DIRENV_LOG_FORMAT=
+    eval "$(direnv hook zsh)"
+fi
