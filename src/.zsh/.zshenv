@@ -2,7 +2,7 @@
 #shellcheck shell=bash
 
 export LANG=en_US.UTF-8
-export LESS='-R'
+export LESS='-R --mouse'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=-
 export TERM=xterm-256color
@@ -34,4 +34,9 @@ fi
 if (( $+commands[direnv] )); then
     export DIRENV_LOG_FORMAT=
     eval "$(direnv hook zsh)"
+fi
+
+# cargo
+if [ -d ~/.cargo ]; then
+    . ~/.cargo/env
 fi

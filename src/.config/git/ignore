@@ -1,1 +1,5 @@
+**/.claude/scheduled_tasks.lock
 **/.claude/settings.local.json
+**/.env
+**/.envrc
+**/CLAUDE.local.md
