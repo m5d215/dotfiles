@@ -14,6 +14,7 @@ export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_COMPLETION_IGNORE=' *(git clone|git remote|ssh|scp) *'
 export PMY_TRIGGER_KEY=^I
+export PATH=$PATH:~/.local/bin
 
 if [ -d "$HOME/Library/Mobile Documents/com~apple~CloudDocs" ]; then
     export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
