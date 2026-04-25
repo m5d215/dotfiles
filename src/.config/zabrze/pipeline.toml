@@ -43,7 +43,7 @@ global = true
 [[snippets]]
 name = "| jq"
 trigger = "J"
-snippet = "| jq ."
+snippet = "| jq-jit -C ."
 global = true
 
 [[snippets]]

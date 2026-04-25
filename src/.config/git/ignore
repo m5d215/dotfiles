@@ -2,4 +2,5 @@
 **/.claude/settings.local.json
 **/.env
 **/.envrc
+**/.mise.local.toml
 **/CLAUDE.local.md
