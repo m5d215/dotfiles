@@ -89,3 +89,8 @@ snippet = "find .{} -type d"
 name = "find (exclude .git node_modules vendor)"
 trigger = "FE"
 snippet = "find .{} -type d \\( -name .git -o -name node_modules -o -name vendor \\) -prune -o -print"
+
+[[snippets]]
+name = "markdown browser"
+trigger = "md"
+snippet = "markdown-browser {}"
