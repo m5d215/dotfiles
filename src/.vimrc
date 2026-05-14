@@ -56,6 +56,9 @@ set softtabstop=4
 set expandtab
 set nowrap
 
+" mouse
+set mouse=a
+
 " Powerline
 let g:airline_powerline_fonts = 1
 

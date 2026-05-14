@@ -8,6 +8,9 @@
 
 set -Ceuo pipefail
 
+# Hooks may fire outside tmux (e.g. Claude Code Web). Bail out silently.
+[[ -n ${TMUX_PANE:-} ]] || exit 0
+
 readonly INDICATOR_RUNNING='…'
 readonly INDICATOR_STOPPED='✓'
 readonly INDICATOR_PERM='!'
