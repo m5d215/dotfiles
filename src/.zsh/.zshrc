@@ -72,7 +72,8 @@ zi wait lucid for \
     blockf \
         zsh-users/zsh-completions \
     atload'!_zsh_autosuggest_start' \
-        zsh-users/zsh-autosuggestions
+        zsh-users/zsh-autosuggestions \
+    m5d215/zsh-ask-llm
 
 zi ice wait lucid
 zi light hlissner/zsh-autopair
